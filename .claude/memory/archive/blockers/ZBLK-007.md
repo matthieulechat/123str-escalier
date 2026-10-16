@@ -1,11 +1,11 @@
 ---
-id: BLK-007
+id: ZBLK-007
 type: blocker
 date: 2026-10-16
 tags: [ui, collapsible, state, unmount, saisie]
 ---
 
-# BLK-007 — Volets refermés à chaque changement de valeur
+# ZBLK-007 — Volets refermés à chaque changement de valeur
 
 | Friction | Cause réelle | Solution | Statut |
 | --- | --- | --- | --- |

@@ -1,11 +1,11 @@
 ---
-id: BLK-009
+id: ZBLK-009
 type: blocker
 date: 2026-10-16
 tags: [rtk, lint, tsc, command-rewriting, tooling]
 ---
 
-# BLK-009 — `pnpm lint` réécrit en eslint par rtk
+# ZBLK-009 — `pnpm lint` réécrit en eslint par rtk
 
 | Friction | Cause réelle | Solution | Statut |
 | --- | --- | --- | --- |

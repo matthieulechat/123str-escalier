@@ -1,11 +1,11 @@
 ---
-id: BLK-008
+id: ZBLK-008
 type: blocker
 date: 2026-10-16
 tags: [pnpm, windows, eperm, package-json, lock]
 ---
 
-# BLK-008 — `pnpm add three` : EPERM au renommage de `package.json`
+# ZBLK-008 — `pnpm add three` : EPERM au renommage de `package.json`
 
 | Friction | Cause réelle | Solution | Statut |
 | --- | --- | --- | --- |

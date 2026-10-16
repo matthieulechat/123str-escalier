@@ -62,4 +62,14 @@ Vue 3D de l'escalier sous le Plan, après comparaison de quatre approches (three
 
 - [BDR-010](decisions/BDR-010.md) — vue 3D three.js lazy-loadée
 - [BDR-011](decisions/BDR-011.md) — paillasse 3D alignée sur la Coupe
-- [BLK-007](blockers/BLK-007.md) — volets refermés à chaque saisie
+- [ZBLK-007](archive/blockers/ZBLK-007.md) — volets refermés à chaque saisie
+
+---
+
+Refonte complète de l'identité visuelle via `/brand-creator`, à la place de « Mètre ruban » et du thème shadcn neutre. Six directions UI proposées (Calque, Cordeau, Coffrage, Herse, Niveau, Finition), contrastes WCAG calculés : Baptiste retient Cordeau. Moodboard logo en deux passes : RulerDimensionLine puis Ruler pour les basiques, et deux séries de concepts sur-mesure (Paillasse / Balancement / Chaîne de cotes, puis Mètre pliant / Équerre / Moulage) ; une planche dédiée croise Moulage avec le trait de craie et les fonds H / C, choix final R1. og:image : template ogimagecn Logo, une planche de six sous-titres, choix T2 « Le calculateur d'escaliers béton du dessinateur. », rendu Satori + resvg dans le scratchpad. Assets PWA régénérés en bleu. Les tokens Cordeau sont ensuite appliqués à `src/index.css`, avec le logo et le trait de craie dans le header ; `pnpm add` des polices bloqué par `minimumReleaseAge`, donc Google Fonts en attendant. Correctif du halo blanc autour des annotations SVG. react-doctor 100/100, lint et build verts, commit `31760ea` ; push refusé (403, pas de droit d'écriture sur le repo de Matthieu). [ZBLK-007](archive/blockers/ZBLK-007.md), [ZBLK-008](archive/blockers/ZBLK-008.md) et [ZBLK-009](archive/blockers/ZBLK-009.md) archivés.
+
+**Entrées clés :**
+
+- [BDR-012](decisions/BDR-012.md) — identité « Cordeau » appliquée à l'app
+- [BLK-010](blockers/BLK-010.md) — `pnpm add` bloqué par `minimumReleaseAge`
+- [BLK-011](blockers/BLK-011.md) — push refusé sur le repo de Matthieu
