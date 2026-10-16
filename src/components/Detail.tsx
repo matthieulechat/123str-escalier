@@ -1,4 +1,4 @@
-import { FigureCard } from './Section.tsx'
+import { CollapsibleCard } from './Section.tsx'
 import type { StairResult } from '../stair.ts'
 import { Dim, Labels } from './Annot.tsx'
 import { boxOf, fmt, lvl, viewBox, type Label } from './svg.ts'
@@ -51,7 +51,7 @@ const Detail = ({ r }: { r: StairResult }) => {
   const FIN = '#fcd34d'
 
   return (
-    <FigureCard title="Détail au départ — vocabulaire" legend="Jaune : finitions · gris : béton brut · cotes et niveaux en cm.">
+    <CollapsibleCard title="Détail au départ — vocabulaire" legend="Jaune : finitions · gris : béton brut · cotes et niveaux en cm.">
       <svg viewBox={viewBox(box, fs, 13)} className="h-auto w-full" role="img" aria-label="Détail annoté des premières marches">
         <path
           d={`${brut.join(' ')} L${xRight},${-under(xRight)} L${xGround},${eBas} Z`}
@@ -79,7 +79,7 @@ const Detail = ({ r }: { r: StairResult }) => {
 
         <Labels items={labels} box={box} fs={fs} />
       </svg>
-    </FigureCard>
+    </CollapsibleCard>
   )
 }
 

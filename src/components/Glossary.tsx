@@ -15,7 +15,7 @@ const TERMS: [string, string][] = [
 ]
 
 const Glossary = () => (
-  <CollapsibleCard title="Lexique" defaultOpen>
+  <CollapsibleCard title="Lexique">
     <dl className="grid gap-x-6 gap-y-2 text-sm md:grid-cols-2">
       {TERMS.map(([t, d]) => (
         <div key={t}>

@@ -1,7 +1,7 @@
 import { DownloadIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { downloadDxf } from '../dxf.ts'
-import { FigureCard } from './Section.tsx'
+import { CollapsibleCard } from './Section.tsx'
 import type { Pt, StairResult } from '../stair.ts'
 import { Dim, Labels } from './Annot.tsx'
 import { boxOf, fmt, viewBox, type Label } from './svg.ts'
@@ -44,7 +44,8 @@ const Plan = ({ r }: { r: StairResult }) => {
   }
 
   return (
-    <FigureCard
+    <CollapsibleCard
+      defaultOpen
       title="Plan"
       action={
         <Button variant="outline" size="sm" onClick={() => downloadDxf(r)} title="Tracés seuls, dans les 4 orientations. Ouvrir dans AutoCAD puis Enregistrer sous DWG.">
@@ -96,7 +97,7 @@ const Plan = ({ r }: { r: StairResult }) => {
         <Dim a={map(risers[1].foulee)} b={map(r2.foulee)} text={`g ${fmt(r.g)}`} fs={fs} offset={fs * 1.2} />
         <Labels items={labels} box={box} fs={fs} gapX={5} />
       </svg>
-    </FigureCard>
+    </CollapsibleCard>
   )
 }
 

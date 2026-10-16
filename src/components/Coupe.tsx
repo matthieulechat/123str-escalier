@@ -1,4 +1,4 @@
-import { FigureCard } from './Section.tsx'
+import { CollapsibleCard } from './Section.tsx'
 import type { StairResult } from '../stair.ts'
 import { Dim, Labels } from './Annot.tsx'
 import { boxOf, fmt, lvl, viewBox, type Label } from './svg.ts'
@@ -62,7 +62,7 @@ const Coupe = ({ r }: { r: StairResult }) => {
   ]
 
   return (
-    <FigureCard title="Coupe développée sur la ligne de foulée" legend="Orange : brut (béton) · pointillé : fini · cotes et niveaux en cm.">
+    <CollapsibleCard title="Coupe développée sur la ligne de foulée" legend="Orange : brut (béton) · pointillé : fini · cotes et niveaux en cm.">
       <svg viewBox={viewBox(box, fs, 17)} className="h-auto w-full" role="img" aria-label="Coupe développée annotée de l'escalier">
         <path d={toPath(beton, true)} fill="#e2e8f0" stroke="none" />
         <line x1={xStart} y1={eBas} x2={xEnd} y2={eBas} stroke="#94a3b8" strokeWidth={fs / 10} />
@@ -80,7 +80,7 @@ const Coupe = ({ r }: { r: StairResult }) => {
 
         <Labels items={labels} box={box} fs={fs} />
       </svg>
-    </FigureCard>
+    </CollapsibleCard>
   )
 }
 
