@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Escalier béton — directions UI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@700;800&family=Work+Sans:wght@400;600&family=Spectral:wght@500;600&family=Public+Sans:wght@400;600&family=Archivo+Black&family=Archivo:wght@400;600&family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;600&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Shell neutre de l'outil de sélection */
+* { box-sizing: border-box; }
+body { margin: 0; padding: 32px 16px 64px; background: #e9e9e7; color: #222; font: 15px/1.5 system-ui, sans-serif; }
+.page-head { max-width: 1200px; margin: 0 auto 28px; }
+.page-head h1 { margin: 0 0 4px; font-size: 22px; }
+.page-head p { margin: 0; color: #555; }
+.dir { max-width: 1200px; margin: 0 auto 36px; display: grid; grid-template-columns: 300px 1fr; gap: 24px; background: #fff; border-radius: 14px; padding: 24px; }
+@media (max-width: 860px) { .dir { grid-template-columns: 1fr; } }
+.meta h2 { margin: 0 0 6px; font-size: 24px; }
+.meta > p { margin: 0 0 14px; color: #444; }
+.palette, .fonts { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 4px; }
+.palette li { display: flex; align-items: center; gap: 8px; }
+.sw { width: 22px; height: 22px; border-radius: 5px; border: 1px solid rgba(0,0,0,.15); flex: none; }
+code { font-size: 12px; }
+.sig { font-size: 13px; color: #555; margin: 0; }
+
+/* Variables par direction */
+.direction-coffrage {
+  --font-display: "Big Shoulders Stencil Display", sans-serif;
+  --font-body: "Work Sans", sans-serif;
+  --primary: #5a3424;
+  --primary-foreground: #f3e7d3;
+  --secondary: #4a2b1f;
+  --background: #3a2219;
+  --foreground: #f3e7d3;
+  --accent: #e8a33d;
+  --muted: #c4a88a;
+  --border: rgba(243, 231, 211, 0.16);
+}
+.direction-calque {
+  --font-display: "Spectral", serif;
+  --font-body: "Public Sans", sans-serif;
+  --primary: #1f2a33;
+  --primary-foreground: #eef1ee;
+  --secondary: #e3e8e5;
+  --background: #eef1ee;
+  --foreground: #1f2a33;
+  --accent: #b8232a;
+  --muted: #56616a;
+  --border: #c3ccc8;
+}
+.direction-beton {
+  --font-display: "Archivo Black", sans-serif;
+  --font-body: "Archivo", sans-serif;
+  --primary: #34342f;
+  --primary-foreground: #ecebe6;
+  --secondary: #d6d5cf;
+  --background: #bdbcb5;
+  --foreground: #1d1d1b;
+  --accent: #1d4a85;
+  --muted: #45453f;
+  --border: rgba(29, 29, 27, 0.2);
+}
+.direction-ferraillage {
+  --font-display: "Barlow Condensed", sans-serif;
+  --font-body: "Barlow", sans-serif;
+  --primary: #2e363b;
+  --primary-foreground: #e6e8e9;
+  --secondary: #2a3136;
+  --background: #22282c;
+  --foreground: #e6e8e9;
+  --accent: #e8874e;
+  --muted: #a3abb0;
+  --border: rgba(230, 232, 233, 0.14);
+}
+.direction-espace-objet {
+  --font-display: "IBM Plex Mono", monospace;
+  --font-body: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --primary: #2b3440;
+  --primary-foreground: #e8ecef;
+  --secondary: #1a2027;
+  --background: #212830;
+  --foreground: #e8ecef;
+  --accent: #22d3d3;
+  --muted: #93a0ad;
+  --border: rgba(232, 236, 239, 0.12);
+  --layer-yellow: #f5d000;
+  --layer-red: #ff6b6b;
+}
+.direction-metre {
+  --font-display: "Bricolage Grotesque", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+  --primary: #1a1a1a;
+  --primary-foreground: #f5c518;
+  --secondary: #fff4cc;
+  --background: #f5c518;
+  --foreground: #1a1a1a;
+  --accent: #a50e26;
+  --muted: #5a4a00;
+  --border: rgba(26, 26, 26, 0.25);
+}
+
+/* Mockup commun : ne consomme que des variables */
+.mock { background: var(--background); color: var(--foreground); font-family: var(--font-body); border-radius: 10px; overflow: hidden; min-width: 0; }
+.m-head { display: flex; align-items: center; gap: 20px; padding: 14px 20px; background: var(--primary); color: var(--primary-foreground); border-bottom: 1px solid var(--border); }
+.m-logo { font-family: var(--font-display); font-size: 22px; }
+.m-head nav { display: flex; gap: 16px; flex: 1; font-size: 14px; }
+.m-head nav a { opacity: .75; }
+.m-head nav a[aria-current] { opacity: 1; border-bottom: 2px solid var(--accent); }
+.m-head button { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--primary-foreground); background: transparent; color: var(--primary-foreground); }
+.m-body { display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px; padding: 18px; }
+@media (max-width: 640px) { .m-body { grid-template-columns: 1fr; } .m-head nav { display: none; } }
+.m-card { background: var(--secondary); border: 1px solid var(--border); border-radius: 8px; padding: 16px; position: relative; }
+.m-card h3 { margin: 0 0 10px; font-family: var(--font-display); font-size: 17px; font-weight: 600; }
+.m-kicker { margin: 0; color: var(--muted); font-size: 14px; }
+.m-big { margin: 4px 0 14px; font-family: var(--font-display); font-size: 34px; line-height: 1.05; }
+.m-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 0; }
+.m-stats dt { font-size: 12px; color: var(--muted); }
+.m-stats dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.m-checks ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+.m-checks span { color: var(--accent); font-weight: 700; margin-right: 4px; }
+.m-coupe svg { width: 100%; height: auto; display: block; }
+.m-slab { fill: var(--border); }
+.m-steps { fill: none; stroke: var(--foreground); stroke-width: 1.6; }
+.m-floor { stroke: var(--accent); stroke-width: 2; }
+.m-bars { display: flex; align-items: flex-end; gap: 8px; height: 110px; }
+.m-bar { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px; }
+.m-bar span { width: 100%; background: var(--accent); border-radius: 3px 3px 0 0; }
+.m-bar em { font-style: normal; font-size: 12px; font-variant-numeric: tabular-nums; }
+
+/* Particularités par direction */
+.direction-coffrage .m-logo, .direction-coffrage .m-big { font-weight: 800; letter-spacing: .02em; color: var(--accent); }
+.direction-coffrage .m-head .m-logo { color: var(--primary-foreground); }
+.direction-coffrage .m-card { border-radius: 2px; }
+
+.direction-calque .mock { border: 1px solid var(--border); }
+.direction-calque .m-head { background: var(--background); color: var(--foreground); border-bottom: 1px solid var(--foreground); }
+.direction-calque .m-head button { border-color: var(--foreground); color: var(--foreground); }
+.direction-calque .m-card { background: transparent; border-radius: 0; border-width: 0 0 0 1px; border-color: var(--foreground); }
+.direction-calque .m-big { font-weight: 500; }
+.direction-calque .m-floor, .direction-calque .m-bar span { stroke: var(--accent); }
+.direction-calque .m-bar span { background: transparent; border: 1.5px solid var(--accent); border-bottom: 0; }
+
+.direction-beton .m-logo, .direction-beton .m-big { text-transform: none; }
+.direction-beton .m-hero { background-color: var(--secondary); background-image: radial-gradient(circle at 50% 50%, var(--border) 3px, transparent 3.5px); background-size: 60px 60px; background-position: 14px 14px; }
+.direction-beton .m-card { border-radius: 0; }
+.direction-beton .m-checks span { color: var(--accent); }
+
+.direction-ferraillage .m-logo, .direction-ferraillage .m-big, .direction-ferraillage .m-card h3 { font-weight: 700; text-transform: none; letter-spacing: .01em; }
+.direction-ferraillage .m-rebar { height: 10px; background: repeating-linear-gradient(115deg, var(--accent) 0 3px, var(--primary) 3px 14px); }
+.direction-ferraillage .m-big { font-size: 40px; }
+
+.direction-espace-objet .m-logo { font-size: 17px; font-weight: 600; }
+.direction-espace-objet .m-big { font-size: 26px; }
+.direction-espace-objet .m-card h3 { font-size: 13px; color: var(--accent); }
+.direction-espace-objet .m-steps { stroke: var(--layer-yellow); }
+.direction-espace-objet .m-floor { stroke: var(--layer-red); }
+.direction-espace-objet .m-stats dd { font-family: var(--font-mono); }
+.direction-espace-objet .m-cross { position: absolute; left: 58%; top: 48%; width: 46px; height: 46px; background: linear-gradient(var(--foreground), var(--foreground)) center/1px 100% no-repeat, linear-gradient(var(--foreground), var(--foreground)) center/100% 1px no-repeat; }
+.direction-espace-objet .m-cross::after { content: ''; position: absolute; inset: 17px; border: 1px solid var(--foreground); }
+.direction-espace-objet .m-coord { position: absolute; right: 10px; bottom: 6px; margin: 0; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+
+.direction-metre .m-head { background: var(--primary); }
+.direction-metre .m-logo, .direction-metre .m-big { font-weight: 800; }
+.direction-metre .m-ruler { height: 22px; background:
+  repeating-linear-gradient(90deg, var(--accent) 0 2px, transparent 2px 100px) 0 0/100% 22px no-repeat,
+  repeating-linear-gradient(90deg, var(--foreground) 0 1.5px, transparent 1.5px 50px) 0 0/100% 15px no-repeat,
+  repeating-linear-gradient(90deg, var(--foreground) 0 1px, transparent 1px 10px) 0 0/100% 8px no-repeat; border-bottom: 1px solid var(--foreground); }
+.direction-metre .m-card { border-radius: 4px; }
+</style>
+</head>
+<body>
+<header class="page-head">
+  <h1>Escalier béton : 6 directions de design</h1>
+  <p>Chaque mockup est rendu avec ses propres variables CSS, copiables telles quelles dans src/index.css.</p>
+</header>
+
+<section class="dir direction-coffrage">
+  <div class="meta">
+    <h2>Coffrage</h2>
+    <p>Contreplaqué bakélisé brun et marquages au pochoir ocre, comme les banches empilées sur le chantier avant le coulage.</p>
+    <ul class="palette"><li><span class="sw" style="background:#5a3424"></span><code>--primary — #5a3424</code></li><li><span class="sw" style="background:#f3e7d3"></span><code>--primary-foreground — #f3e7d3</code></li><li><span class="sw" style="background:#4a2b1f"></span><code>--secondary — #4a2b1f</code></li><li><span class="sw" style="background:#3a2219"></span><code>--background — #3a2219</code></li><li><span class="sw" style="background:#f3e7d3"></span><code>--foreground — #f3e7d3</code></li><li><span class="sw" style="background:#e8a33d"></span><code>--accent — #e8a33d</code></li><li><span class="sw" style="background:#c4a88a"></span><code>--muted — #c4a88a</code></li><li><span class="sw" style="background:rgba(243, 231, 211, 0.16)"></span><code>--border — rgba(243, 231, 211, 0.16)</code></li></ul>
+    <ul class="fonts"><li><code>--font-display — Big Shoulders Stencil Display</code></li><li><code>--font-body — Work Sans</code></li></ul>
+    <p class="sig">Pas de motif : palette, typographie et mise en page seules.</p>
+  </div>
+  <div class="mock">
+    <header class="m-head">
+      <span class="m-logo">Escalier béton</span>
+      <nav aria-label="Sections"><a>Saisie</a><a aria-current="page">Résultats</a><a>Schémas</a></nav>
+      <button type="button">Imprimer</button>
+    </header>
+    
+    <div class="m-body">
+      <div class="m-card m-hero">
+        <p class="m-kicker">Demi-tour gauche, emmarchement 90 cm</p>
+        <p class="m-big">16 contremarches de 17,5 cm</p>
+        <dl class="m-stats">
+          <div><dt>Giron</dt><dd>28,1 cm</dd></div>
+          <div><dt>2h + g</dt><dd>63,1 cm</dd></div>
+          <div><dt>NB départ</dt><dd>−5 cm</dd></div>
+          <div><dt>NB arrivée</dt><dd>275 cm</dd></div>
+        </dl>
+      </div>
+      <div class="m-card m-checks">
+        <h3>Règles du bureau</h3>
+        <ul>
+          <li><span aria-hidden="true">✔</span> Hauteur 17,5 cm (h ≤ 18)</li>
+          <li><span aria-hidden="true">✔</span> Giron 28,1 cm (g ≥ 24)</li>
+          <li><span aria-hidden="true">✔</span> Pas 63,1 cm (60 &lt; 2h + g &lt; 64)</li>
+        </ul>
+      </div>
+      <div class="m-card m-coupe">
+        <h3>Coupe développée</h3>
+        <svg viewBox="0 0 330 160" role="img" aria-label="Coupe développée : 16 contremarches de 17,5 cm"><path class="m-slab" d="M 10 150 L 172.0246 -12.75 l 18 0 l 0 14 L 10 164 Z"/><path class="m-steps" d="M 10 150 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 18"/><line class="m-floor" x1="0" y1="150" x2="40" y2="150"/></svg>
+        
+      </div>
+      <div class="m-card m-herse">
+        <h3>Balancement, collets au jour (cm)</h3>
+        <div class="m-bars"><div class="m-bar"><span style="height:97.86476868327402%"></span><em>27,5</em></div><div class="m-bar"><span style="height:68.32740213523131%"></span><em>19,2</em></div><div class="m-bar"><span style="height:50.17793594306049%"></span><em>14,1</em></div><div class="m-bar"><span style="height:38.43416370106761%"></span><em>10,8</em></div><div class="m-bar"><span style="height:30.60498220640569%"></span><em>8,6</em></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dir direction-calque">
+  <div class="meta">
+    <h2>Calque</h2>
+    <p>Papier calque d’atelier, trait graphite et reprises au feutre rouge : la planche avant le tirage.</p>
+    <ul class="palette"><li><span class="sw" style="background:#1f2a33"></span><code>--primary — #1f2a33</code></li><li><span class="sw" style="background:#eef1ee"></span><code>--primary-foreground — #eef1ee</code></li><li><span class="sw" style="background:#e3e8e5"></span><code>--secondary — #e3e8e5</code></li><li><span class="sw" style="background:#eef1ee"></span><code>--background — #eef1ee</code></li><li><span class="sw" style="background:#1f2a33"></span><code>--foreground — #1f2a33</code></li><li><span class="sw" style="background:#b8232a"></span><code>--accent — #b8232a</code></li><li><span class="sw" style="background:#56616a"></span><code>--muted — #56616a</code></li><li><span class="sw" style="background:#c3ccc8"></span><code>--border — #c3ccc8</code></li></ul>
+    <ul class="fonts"><li><code>--font-display — Spectral</code></li><li><code>--font-body — Public Sans</code></li></ul>
+    <p class="sig">Pas de motif : palette, typographie et mise en page seules.</p>
+  </div>
+  <div class="mock">
+    <header class="m-head">
+      <span class="m-logo">Escalier béton</span>
+      <nav aria-label="Sections"><a>Saisie</a><a aria-current="page">Résultats</a><a>Schémas</a></nav>
+      <button type="button">Imprimer</button>
+    </header>
+    
+    <div class="m-body">
+      <div class="m-card m-hero">
+        <p class="m-kicker">Demi-tour gauche, emmarchement 90 cm</p>
+        <p class="m-big">16 contremarches de 17,5 cm</p>
+        <dl class="m-stats">
+          <div><dt>Giron</dt><dd>28,1 cm</dd></div>
+          <div><dt>2h + g</dt><dd>63,1 cm</dd></div>
+          <div><dt>NB départ</dt><dd>−5 cm</dd></div>
+          <div><dt>NB arrivée</dt><dd>275 cm</dd></div>
+        </dl>
+      </div>
+      <div class="m-card m-checks">
+        <h3>Règles du bureau</h3>
+        <ul>
+          <li><span aria-hidden="true">✔</span> Hauteur 17,5 cm (h ≤ 18)</li>
+          <li><span aria-hidden="true">✔</span> Giron 28,1 cm (g ≥ 24)</li>
+          <li><span aria-hidden="true">✔</span> Pas 63,1 cm (60 &lt; 2h + g &lt; 64)</li>
+        </ul>
+      </div>
+      <div class="m-card m-coupe">
+        <h3>Coupe développée</h3>
+        <svg viewBox="0 0 330 160" role="img" aria-label="Coupe développée : 16 contremarches de 17,5 cm"><path class="m-slab" d="M 10 150 L 172.0246 -12.75 l 18 0 l 0 14 L 10 164 Z"/><path class="m-steps" d="M 10 150 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 18"/><line class="m-floor" x1="0" y1="150" x2="40" y2="150"/></svg>
+        
+      </div>
+      <div class="m-card m-herse">
+        <h3>Balancement, collets au jour (cm)</h3>
+        <div class="m-bars"><div class="m-bar"><span style="height:97.86476868327402%"></span><em>27,5</em></div><div class="m-bar"><span style="height:68.32740213523131%"></span><em>19,2</em></div><div class="m-bar"><span style="height:50.17793594306049%"></span><em>14,1</em></div><div class="m-bar"><span style="height:38.43416370106761%"></span><em>10,8</em></div><div class="m-bar"><span style="height:30.60498220640569%"></span><em>8,6</em></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dir direction-beton">
+  <div class="meta">
+    <h2>Béton brut</h2>
+    <p>Voile décoffré gris, trous de tiges alignés et repères à la craie bleue du chef d’équipe.</p>
+    <ul class="palette"><li><span class="sw" style="background:#34342f"></span><code>--primary — #34342f</code></li><li><span class="sw" style="background:#ecebe6"></span><code>--primary-foreground — #ecebe6</code></li><li><span class="sw" style="background:#d6d5cf"></span><code>--secondary — #d6d5cf</code></li><li><span class="sw" style="background:#bdbcb5"></span><code>--background — #bdbcb5</code></li><li><span class="sw" style="background:#1d1d1b"></span><code>--foreground — #1d1d1b</code></li><li><span class="sw" style="background:#1d4a85"></span><code>--accent — #1d4a85</code></li><li><span class="sw" style="background:#45453f"></span><code>--muted — #45453f</code></li><li><span class="sw" style="background:rgba(29, 29, 27, 0.2)"></span><code>--border — rgba(29, 29, 27, 0.2)</code></li></ul>
+    <ul class="fonts"><li><code>--font-display — Archivo Black</code></li><li><code>--font-body — Archivo</code></li></ul>
+    <p class="sig">Signature : Rangées de trous de tiges de banche (fond de la carte de saisie)</p>
+  </div>
+  <div class="mock">
+    <header class="m-head">
+      <span class="m-logo">Escalier béton</span>
+      <nav aria-label="Sections"><a>Saisie</a><a aria-current="page">Résultats</a><a>Schémas</a></nav>
+      <button type="button">Imprimer</button>
+    </header>
+    
+    <div class="m-body">
+      <div class="m-card m-hero">
+        <p class="m-kicker">Demi-tour gauche, emmarchement 90 cm</p>
+        <p class="m-big">16 contremarches de 17,5 cm</p>
+        <dl class="m-stats">
+          <div><dt>Giron</dt><dd>28,1 cm</dd></div>
+          <div><dt>2h + g</dt><dd>63,1 cm</dd></div>
+          <div><dt>NB départ</dt><dd>−5 cm</dd></div>
+          <div><dt>NB arrivée</dt><dd>275 cm</dd></div>
+        </dl>
+      </div>
+      <div class="m-card m-checks">
+        <h3>Règles du bureau</h3>
+        <ul>
+          <li><span aria-hidden="true">✔</span> Hauteur 17,5 cm (h ≤ 18)</li>
+          <li><span aria-hidden="true">✔</span> Giron 28,1 cm (g ≥ 24)</li>
+          <li><span aria-hidden="true">✔</span> Pas 63,1 cm (60 &lt; 2h + g &lt; 64)</li>
+        </ul>
+      </div>
+      <div class="m-card m-coupe">
+        <h3>Coupe développée</h3>
+        <svg viewBox="0 0 330 160" role="img" aria-label="Coupe développée : 16 contremarches de 17,5 cm"><path class="m-slab" d="M 10 150 L 172.0246 -12.75 l 18 0 l 0 14 L 10 164 Z"/><path class="m-steps" d="M 10 150 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 18"/><line class="m-floor" x1="0" y1="150" x2="40" y2="150"/></svg>
+        
+      </div>
+      <div class="m-card m-herse">
+        <h3>Balancement, collets au jour (cm)</h3>
+        <div class="m-bars"><div class="m-bar"><span style="height:97.86476868327402%"></span><em>27,5</em></div><div class="m-bar"><span style="height:68.32740213523131%"></span><em>19,2</em></div><div class="m-bar"><span style="height:50.17793594306049%"></span><em>14,1</em></div><div class="m-bar"><span style="height:38.43416370106761%"></span><em>10,8</em></div><div class="m-bar"><span style="height:30.60498220640569%"></span><em>8,6</em></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dir direction-ferraillage">
+  <div class="meta">
+    <h2>Ferraillage</h2>
+    <p>Acier HA gris bleuté et rouille de chantier : les aciers en attente qui ressortent de la paillasse.</p>
+    <ul class="palette"><li><span class="sw" style="background:#2e363b"></span><code>--primary — #2e363b</code></li><li><span class="sw" style="background:#e6e8e9"></span><code>--primary-foreground — #e6e8e9</code></li><li><span class="sw" style="background:#2a3136"></span><code>--secondary — #2a3136</code></li><li><span class="sw" style="background:#22282c"></span><code>--background — #22282c</code></li><li><span class="sw" style="background:#e6e8e9"></span><code>--foreground — #e6e8e9</code></li><li><span class="sw" style="background:#e8874e"></span><code>--accent — #e8874e</code></li><li><span class="sw" style="background:#a3abb0"></span><code>--muted — #a3abb0</code></li><li><span class="sw" style="background:rgba(230, 232, 233, 0.14)"></span><code>--border — rgba(230, 232, 233, 0.14)</code></li></ul>
+    <ul class="fonts"><li><code>--font-display — Barlow Condensed</code></li><li><code>--font-body — Barlow</code></li></ul>
+    <p class="sig">Signature : Verrous d’acier haute adhérence (nervures obliques sous l’en-tête)</p>
+  </div>
+  <div class="mock">
+    <header class="m-head">
+      <span class="m-logo">Escalier béton</span>
+      <nav aria-label="Sections"><a>Saisie</a><a aria-current="page">Résultats</a><a>Schémas</a></nav>
+      <button type="button">Imprimer</button>
+    </header>
+    <div class="m-rebar" aria-hidden="true"></div>
+    <div class="m-body">
+      <div class="m-card m-hero">
+        <p class="m-kicker">Demi-tour gauche, emmarchement 90 cm</p>
+        <p class="m-big">16 contremarches de 17,5 cm</p>
+        <dl class="m-stats">
+          <div><dt>Giron</dt><dd>28,1 cm</dd></div>
+          <div><dt>2h + g</dt><dd>63,1 cm</dd></div>
+          <div><dt>NB départ</dt><dd>−5 cm</dd></div>
+          <div><dt>NB arrivée</dt><dd>275 cm</dd></div>
+        </dl>
+      </div>
+      <div class="m-card m-checks">
+        <h3>Règles du bureau</h3>
+        <ul>
+          <li><span aria-hidden="true">✔</span> Hauteur 17,5 cm (h ≤ 18)</li>
+          <li><span aria-hidden="true">✔</span> Giron 28,1 cm (g ≥ 24)</li>
+          <li><span aria-hidden="true">✔</span> Pas 63,1 cm (60 &lt; 2h + g &lt; 64)</li>
+        </ul>
+      </div>
+      <div class="m-card m-coupe">
+        <h3>Coupe développée</h3>
+        <svg viewBox="0 0 330 160" role="img" aria-label="Coupe développée : 16 contremarches de 17,5 cm"><path class="m-slab" d="M 10 150 L 172.0246 -12.75 l 18 0 l 0 14 L 10 164 Z"/><path class="m-steps" d="M 10 150 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 18"/><line class="m-floor" x1="0" y1="150" x2="40" y2="150"/></svg>
+        
+      </div>
+      <div class="m-card m-herse">
+        <h3>Balancement, collets au jour (cm)</h3>
+        <div class="m-bars"><div class="m-bar"><span style="height:97.86476868327402%"></span><em>27,5</em></div><div class="m-bar"><span style="height:68.32740213523131%"></span><em>19,2</em></div><div class="m-bar"><span style="height:50.17793594306049%"></span><em>14,1</em></div><div class="m-bar"><span style="height:38.43416370106761%"></span><em>10,8</em></div><div class="m-bar"><span style="height:30.60498220640569%"></span><em>8,6</em></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dir direction-espace-objet">
+  <div class="meta">
+    <h2>Espace objet</h2>
+    <p>L’écran AutoCAD du dessinateur : fond d’espace objet, calques cyan, jaune et rouge, réticule et coordonnées.</p>
+    <ul class="palette"><li><span class="sw" style="background:#2b3440"></span><code>--primary — #2b3440</code></li><li><span class="sw" style="background:#e8ecef"></span><code>--primary-foreground — #e8ecef</code></li><li><span class="sw" style="background:#1a2027"></span><code>--secondary — #1a2027</code></li><li><span class="sw" style="background:#212830"></span><code>--background — #212830</code></li><li><span class="sw" style="background:#e8ecef"></span><code>--foreground — #e8ecef</code></li><li><span class="sw" style="background:#22d3d3"></span><code>--accent — #22d3d3</code></li><li><span class="sw" style="background:#93a0ad"></span><code>--muted — #93a0ad</code></li><li><span class="sw" style="background:rgba(232, 236, 239, 0.12)"></span><code>--border — rgba(232, 236, 239, 0.12)</code></li><li><span class="sw" style="background:#f5d000"></span><code>--layer-yellow — #f5d000</code></li><li><span class="sw" style="background:#ff6b6b"></span><code>--layer-red — #ff6b6b</code></li></ul>
+    <ul class="fonts"><li><code>--font-display — IBM Plex Mono</code></li><li><code>--font-body — IBM Plex Sans</code></li><li><code>--font-mono — IBM Plex Mono</code></li></ul>
+    <p class="sig">Signature : Réticule AutoCAD et lecture de coordonnées (coin du schéma)</p>
+  </div>
+  <div class="mock">
+    <header class="m-head">
+      <span class="m-logo">Escalier béton</span>
+      <nav aria-label="Sections"><a>Saisie</a><a aria-current="page">Résultats</a><a>Schémas</a></nav>
+      <button type="button">Imprimer</button>
+    </header>
+    
+    <div class="m-body">
+      <div class="m-card m-hero">
+        <p class="m-kicker">Demi-tour gauche, emmarchement 90 cm</p>
+        <p class="m-big">16 contremarches de 17,5 cm</p>
+        <dl class="m-stats">
+          <div><dt>Giron</dt><dd>28,1 cm</dd></div>
+          <div><dt>2h + g</dt><dd>63,1 cm</dd></div>
+          <div><dt>NB départ</dt><dd>−5 cm</dd></div>
+          <div><dt>NB arrivée</dt><dd>275 cm</dd></div>
+        </dl>
+      </div>
+      <div class="m-card m-checks">
+        <h3>Règles du bureau</h3>
+        <ul>
+          <li><span aria-hidden="true">✔</span> Hauteur 17,5 cm (h ≤ 18)</li>
+          <li><span aria-hidden="true">✔</span> Giron 28,1 cm (g ≥ 24)</li>
+          <li><span aria-hidden="true">✔</span> Pas 63,1 cm (60 &lt; 2h + g &lt; 64)</li>
+        </ul>
+      </div>
+      <div class="m-card m-coupe">
+        <h3>Coupe développée</h3>
+        <svg viewBox="0 0 330 160" role="img" aria-label="Coupe développée : 16 contremarches de 17,5 cm"><path class="m-slab" d="M 10 150 L 172.0246 -12.75 l 18 0 l 0 14 L 10 164 Z"/><path class="m-steps" d="M 10 150 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 18"/><line class="m-floor" x1="0" y1="150" x2="40" y2="150"/></svg>
+        <div class="m-cross" aria-hidden="true"></div><p class="m-coord">X 421,4  Y 280,0</p>
+      </div>
+      <div class="m-card m-herse">
+        <h3>Balancement, collets au jour (cm)</h3>
+        <div class="m-bars"><div class="m-bar"><span style="height:97.86476868327402%"></span><em>27,5</em></div><div class="m-bar"><span style="height:68.32740213523131%"></span><em>19,2</em></div><div class="m-bar"><span style="height:50.17793594306049%"></span><em>14,1</em></div><div class="m-bar"><span style="height:38.43416370106761%"></span><em>10,8</em></div><div class="m-bar"><span style="height:30.60498220640569%"></span><em>8,6</em></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dir direction-metre">
+  <div class="meta">
+    <h2>Mètre ruban</h2>
+    <p>Le décamètre jaune qu’on tire dans la trémie : graduations noires, décimètres en rouge.</p>
+    <ul class="palette"><li><span class="sw" style="background:#1a1a1a"></span><code>--primary — #1a1a1a</code></li><li><span class="sw" style="background:#f5c518"></span><code>--primary-foreground — #f5c518</code></li><li><span class="sw" style="background:#fff4cc"></span><code>--secondary — #fff4cc</code></li><li><span class="sw" style="background:#f5c518"></span><code>--background — #f5c518</code></li><li><span class="sw" style="background:#1a1a1a"></span><code>--foreground — #1a1a1a</code></li><li><span class="sw" style="background:#a50e26"></span><code>--accent — #a50e26</code></li><li><span class="sw" style="background:#5a4a00"></span><code>--muted — #5a4a00</code></li><li><span class="sw" style="background:rgba(26, 26, 26, 0.25)"></span><code>--border — rgba(26, 26, 26, 0.25)</code></li></ul>
+    <ul class="fonts"><li><code>--font-display — Bricolage Grotesque</code></li><li><code>--font-body — DM Sans</code></li></ul>
+    <p class="sig">Signature : Bande de graduations (cm / dm) sous l’en-tête</p>
+  </div>
+  <div class="mock">
+    <header class="m-head">
+      <span class="m-logo">Escalier béton</span>
+      <nav aria-label="Sections"><a>Saisie</a><a aria-current="page">Résultats</a><a>Schémas</a></nav>
+      <button type="button">Imprimer</button>
+    </header>
+    <div class="m-ruler" aria-hidden="true"></div>
+    <div class="m-body">
+      <div class="m-card m-hero">
+        <p class="m-kicker">Demi-tour gauche, emmarchement 90 cm</p>
+        <p class="m-big">16 contremarches de 17,5 cm</p>
+        <dl class="m-stats">
+          <div><dt>Giron</dt><dd>28,1 cm</dd></div>
+          <div><dt>2h + g</dt><dd>63,1 cm</dd></div>
+          <div><dt>NB départ</dt><dd>−5 cm</dd></div>
+          <div><dt>NB arrivée</dt><dd>275 cm</dd></div>
+        </dl>
+      </div>
+      <div class="m-card m-checks">
+        <h3>Règles du bureau</h3>
+        <ul>
+          <li><span aria-hidden="true">✔</span> Hauteur 17,5 cm (h ≤ 18)</li>
+          <li><span aria-hidden="true">✔</span> Giron 28,1 cm (g ≥ 24)</li>
+          <li><span aria-hidden="true">✔</span> Pas 63,1 cm (60 &lt; 2h + g &lt; 64)</li>
+        </ul>
+      </div>
+      <div class="m-card m-coupe">
+        <h3>Coupe développée</h3>
+        <svg viewBox="0 0 330 160" role="img" aria-label="Coupe développée : 16 contremarches de 17,5 cm"><path class="m-slab" d="M 10 150 L 172.0246 -12.75 l 18 0 l 0 14 L 10 164 Z"/><path class="m-steps" d="M 10 150 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 10.80 v -10.85 h 18"/><line class="m-floor" x1="0" y1="150" x2="40" y2="150"/></svg>
+        
+      </div>
+      <div class="m-card m-herse">
+        <h3>Balancement, collets au jour (cm)</h3>
+        <div class="m-bars"><div class="m-bar"><span style="height:97.86476868327402%"></span><em>27,5</em></div><div class="m-bar"><span style="height:68.32740213523131%"></span><em>19,2</em></div><div class="m-bar"><span style="height:50.17793594306049%"></span><em>14,1</em></div><div class="m-bar"><span style="height:38.43416370106761%"></span><em>10,8</em></div><div class="m-bar"><span style="height:30.60498220640569%"></span><em>8,6</em></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

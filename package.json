@@ -8,7 +8,8 @@
     "lint": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
     "check": "node stair.check.ts",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-pwa-assets": "pwa-assets-generator"
   },
   "dependencies": {
     "react": "^19.3.1",
@@ -18,11 +19,13 @@
     "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "@vite-pwa/assets-generator": "^2.0.0",
     "@vitejs/plugin-react": "^6.1.2",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
     "vite": "^8.3.4",
     "vite-plugin-checker": "^0.14.5",
+    "vite-plugin-pwa": "^2.0.0",
     "vite-plugin-qrcode": "^0.4.1"
   }
 }
