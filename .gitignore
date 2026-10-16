@@ -1,0 +1,10 @@
+node_modules
+dist
+
+# Obsidian vault
+**/.obsidian/
+.claude/memory/dashboard.md
+
+# Verrous AutoCAD
+*.dwl
+*.dwl2
