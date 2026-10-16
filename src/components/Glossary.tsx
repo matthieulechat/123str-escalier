@@ -1,3 +1,5 @@
+import { CollapsibleCard } from './Section.tsx'
+
 const TERMS: [string, string][] = [
   ['Contremarche (CM)', 'Face verticale entre deux marches. Hauteur h = hauteur à monter ÷ nombre de contremarches.'],
   ['Marche / giron (g)', 'Partie horizontale où l’on pose le pied. Le giron est sa profondeur, mesurée sur la ligne de foulée.'],
@@ -13,17 +15,16 @@ const TERMS: [string, string][] = [
 ]
 
 const Glossary = () => (
-  <details className="rounded-lg border border-slate-200 bg-white p-3" open>
-    <summary className="cursor-pointer text-sm font-semibold">Lexique</summary>
-    <dl className="mt-2 grid gap-x-6 gap-y-2 text-sm md:grid-cols-2">
+  <CollapsibleCard title="Lexique" defaultOpen>
+    <dl className="grid gap-x-6 gap-y-2 text-sm md:grid-cols-2">
       {TERMS.map(([t, d]) => (
         <div key={t}>
-          <dt className="font-semibold text-slate-800">{t}</dt>
-          <dd className="text-slate-600">{d}</dd>
+          <dt className="font-semibold">{t}</dt>
+          <dd className="text-muted-foreground">{d}</dd>
         </div>
       ))}
     </dl>
-  </details>
+  </CollapsibleCard>
 )
 
 export default Glossary

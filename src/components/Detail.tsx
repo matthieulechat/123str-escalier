@@ -1,3 +1,4 @@
+import { FigureCard } from './Section.tsx'
 import type { StairResult } from '../stair.ts'
 import { Dim, Labels } from './Annot.tsx'
 import { boxOf, fmt, lvl, viewBox, type Label } from './svg.ts'
@@ -50,8 +51,7 @@ const Detail = ({ r }: { r: StairResult }) => {
   const FIN = '#fcd34d'
 
   return (
-    <figure className="rounded-lg border border-slate-200 bg-white p-3">
-      <figcaption className="mb-2 text-sm font-semibold">Détail au départ — vocabulaire</figcaption>
+    <FigureCard title="Détail au départ — vocabulaire" legend="Jaune : finitions · gris : béton brut · cotes et niveaux en cm.">
       <svg viewBox={viewBox(box, fs, 13)} className="h-auto w-full" role="img" aria-label="Détail annoté des premières marches">
         <path
           d={`${brut.join(' ')} L${xRight},${-under(xRight)} L${xGround},${eBas} Z`}
@@ -79,8 +79,7 @@ const Detail = ({ r }: { r: StairResult }) => {
 
         <Labels items={labels} box={box} fs={fs} />
       </svg>
-      <p className="mt-2 text-xs text-slate-600">Jaune : finitions · gris : béton brut · cotes et niveaux en cm.</p>
-    </figure>
+    </FigureCard>
   )
 }
 

@@ -1,3 +1,4 @@
+import { CollapsibleCard } from './Section.tsx'
 import type { HerseData, StairResult } from '../stair.ts'
 import { fmt } from './svg.ts'
 
@@ -66,7 +67,7 @@ const Diagram = ({ d }: { d: HerseData }) => {
           AC = foulée à balancer {fmt(a)} (girons reportés en rouge)
         </text>
       </svg>
-      <p className="text-xs text-slate-600 tabular-nums">
+      <p className="text-xs text-muted-foreground tabular-nums">
         Collets cumulés : {points.map((p) => `CM ${p.j + 1} → ${fmt(p.collet)}`).join(' · ')}
       </p>
     </figure>
@@ -75,9 +76,8 @@ const Diagram = ({ d }: { d: HerseData }) => {
 
 const Herse = ({ r }: { r: StairResult }) =>
   r.herses.length === 0 ? null : (
-    <details className="rounded-lg border border-slate-200 bg-white p-3">
-      <summary className="cursor-pointer text-sm font-semibold">Tracé de la herse (balancement)</summary>
-      <p className="mt-2 text-xs text-slate-600">
+    <CollapsibleCard title="Tracé de la herse (balancement)">
+      <p className="text-xs text-muted-foreground">
         AB = longueur au jour à balancer, AC = longueur de foulée à balancer avec les girons reportés. D est sur BC avec AD = AB
         (arc violet). Les droites issues de B vers chaque giron coupent AD : la distance depuis A donne le collet cumulé (bleu),
         à reporter sur le jour à partir de la dernière marche non balancée. Valeurs en cm.
@@ -87,7 +87,7 @@ const Herse = ({ r }: { r: StairResult }) =>
           <Diagram key={d.cote} d={d} />
         ))}
       </div>
-    </details>
+    </CollapsibleCard>
   )
 
 export default Herse

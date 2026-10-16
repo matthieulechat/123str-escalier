@@ -1,3 +1,4 @@
+import { FigureCard } from './Section.tsx'
 import type { Pt, StairResult } from '../stair.ts'
 import { Dim, Labels } from './Annot.tsx'
 import { boxOf, fmt, viewBox, type Label } from './svg.ts'
@@ -40,8 +41,18 @@ const Plan = ({ r }: { r: StairResult }) => {
   }
 
   return (
-    <figure className="rounded-lg border border-slate-200 bg-white p-3">
-      <figcaption className="mb-2 text-sm font-semibold">Plan</figcaption>
+    <FigureCard
+      title="Plan"
+      legend={
+        <p className="flex flex-wrap gap-x-4 gap-y-1">
+          <span>━ brut (béton)</span>
+          <span>┄ fini (après finition de {fmt(r.input.finContremarche)} cm en contremarche)</span>
+          <span className="text-sky-700">bleu : marches balancées</span>
+          <span className="text-red-600">rouge : ligne de foulée</span>
+          <span>Cotes en cm.</span>
+        </p>
+      }
+    >
       <svg viewBox={viewBox(box, fs, 18)} className="h-auto w-full" role="img" aria-label="Vue en plan annotée de l'escalier">
         <path d={path(r.outerLine)} fill="none" stroke="#0f172a" strokeWidth={fs / 4} />
         <path d={path(r.innerLine)} fill="none" stroke="#0f172a" strokeWidth={fs / 4} />
@@ -76,14 +87,7 @@ const Plan = ({ r }: { r: StairResult }) => {
         <Dim a={map(risers[1].foulee)} b={map(r2.foulee)} text={`g ${fmt(r.g)}`} fs={fs} offset={fs * 1.2} />
         <Labels items={labels} box={box} fs={fs} gapX={5} />
       </svg>
-      <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-600">
-        <span>━ brut (béton)</span>
-        <span>┄ fini (après finition de {fmt(r.input.finContremarche)} cm en contremarche)</span>
-        <span className="text-sky-700">bleu : marches balancées</span>
-        <span className="text-red-600">rouge : ligne de foulée</span>
-        <span>Cotes en cm.</span>
-      </p>
-    </figure>
+    </FigureCard>
   )
 }
 

@@ -1,4 +1,7 @@
 import { useMemo, useState } from 'react'
+import { PrinterIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { computeStair, type StairInput } from './stair.ts'
 import Saisie from './components/Saisie/index.tsx'
 import Herse from './components/Herse.tsx'
@@ -33,23 +36,20 @@ const App = () => {
   const result = useMemo(() => computeStair(input), [input])
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="flex items-center justify-between border-b border-slate-200 bg-white px-6 py-3">
+    <div className="min-h-screen bg-muted/40">
+      <header className="flex items-center justify-between border-b bg-background px-6 py-3">
         <h1 className="text-lg font-bold">Escalier béton — calcul des dimensions</h1>
-        <button
-          type="button"
-          onClick={() => window.print()}
-          className="rounded bg-slate-800 px-3 py-1.5 text-sm text-white hover:bg-slate-700 print:hidden"
-        >
+        <Button onClick={() => window.print()} className="print:hidden">
+          <PrinterIcon aria-hidden="true" />
           Imprimer
-        </button>
+        </Button>
       </header>
       <main className="mx-auto flex max-w-6xl flex-col gap-6 p-6">
         <Saisie value={input} onChange={setInput} />
         {'error' in result ? (
-          <p role="alert" className="rounded border border-red-300 bg-red-50 p-4 text-red-800">
-            {result.error}
-          </p>
+          <Alert variant="destructive">
+            <AlertDescription>{result.error}</AlertDescription>
+          </Alert>
         ) : (
           <section className="flex min-w-0 flex-col gap-6">
             <Results r={result} />
