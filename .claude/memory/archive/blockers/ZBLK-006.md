@@ -1,11 +1,11 @@
 ---
-id: BLK-006
+id: ZBLK-006
 type: blocker
 date: 2026-10-16
 tags: [ui, layout, vocabulaire, composant, results]
 ---
 
-# BLK-006 — « Tableau des valeurs » mal identifié, deux déplacements faux
+# ZBLK-006 — « Tableau des valeurs » mal identifié, deux déplacements faux
 
 | Friction | Cause réelle | Solution | Statut |
 | --- | --- | --- | --- |
@@ -13,4 +13,4 @@ tags: [ui, layout, vocabulaire, composant, results]
 
 ## Références
 
-- [LRN-011](../learnings/LRN-011.md) — pattern extrait
+- [LRN-011](../../learnings/LRN-011.md) — pattern extrait

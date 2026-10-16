@@ -52,4 +52,14 @@ Réorganisation des résultats à la demande de Baptiste. Le volet *Tableau des 
 **Entrées clés :**
 
 - [BDR-009](decisions/BDR-009.md) — résultats en volets repliables, seul le plan ouvert
-- [BLK-006](blockers/BLK-006.md) — « tableau des valeurs » mal identifié
+- [ZBLK-006](archive/blockers/ZBLK-006.md) — « tableau des valeurs » mal identifié
+
+---
+
+Vue 3D de l'escalier sous le Plan, après comparaison de quatre approches (three.js vanilla, react-three-fiber, axonométrie SVG, export glTF) : three.js retenu, chargé à l'ouverture d'un volet fermé par défaut. Itérations avec Baptiste sur le rendu : la première paillasse en redans a été remplacée par une sous-face continue alignée sur la convention de la Coupe, les finitions de contremarche ajoutées, puis deux coches (finitions, balancées en bleu). Les arêtes automatiques traçaient des traits parasites sur les flancs ; leur suppression rendait la vue de dessus illisible, d'où un tracé manuel des seules vraies arêtes. Lenteur à la saisie mesurée dans le navigateur (≈100 ms par frappe avec la 3D ouverte) : reconstruction différée de 200 ms, géométries fusionnées et pixel ratio plafonné ramènent la frappe à ≈17 ms. Au passage, les volets se refermaient à chaque saisie, parce qu'une valeur intermédiaire invalide démontait toute la section de résultats : elle est désormais masquée et garde son état. react-doctor 100/100, commit `d58facf` (non poussé). [ZBLK-006](archive/blockers/ZBLK-006.md) archivé ; trois learnings passés en global (GLRN-343 à GLRN-345).
+
+**Entrées clés :**
+
+- [BDR-010](decisions/BDR-010.md) — vue 3D three.js lazy-loadée
+- [BDR-011](decisions/BDR-011.md) — paillasse 3D alignée sur la Coupe
+- [BLK-007](blockers/BLK-007.md) — volets refermés à chaque saisie

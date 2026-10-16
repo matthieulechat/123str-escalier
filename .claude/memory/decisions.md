@@ -15,3 +15,5 @@ register: decisions
 | [BDR-007](decisions/BDR-007.md) | 2026-10-16 | Correspondance des tracés avec les calques ABAK | #dxf #calques #abak #autocad #convention #dessinateur | actif |
 | [BDR-008](decisions/BDR-008.md) | 2026-10-16 | 4 orientations dans l'export, pas de bouton rotation | #dxf #rotation #orientation #plan-archi #ux | actif |
 | [BDR-009](decisions/BDR-009.md) | 2026-10-16 | Résultats en volets repliables, seul le plan ouvert | #ui #layout #collapsible #plan #export-dxf #ux | actif |
+| [BDR-010](decisions/BDR-010.md) | 2026-10-16 | Vue 3D three.js lazy-loadée dans un volet fermé | #3d #threejs #lazy-load #bundle #collapsible #ui | actif |
+| [BDR-011](decisions/BDR-011.md) | 2026-10-16 | Paillasse 3D : même convention que la Coupe | #3d #paillasse #sous-face #convention #coupe #balancement | actif |
