@@ -1,11 +1,11 @@
 ---
-id: BLK-003
+id: ZBLK-003
 type: blocker
 date: 2026-10-16
 tags: [mkcert, https, preview, certificat, vite]
 ---
 
-# BLK-003 — Aperçu HTTPS refusé malgré `mkcert -install`
+# ZBLK-003 — Aperçu HTTPS refusé malgré `mkcert -install`
 
 | Friction | Cause réelle | Solution | Statut |
 | --- | --- | --- | --- |
@@ -13,5 +13,5 @@ tags: [mkcert, https, preview, certificat, vite]
 
 ## Références
 
-- [BDR-004](../decisions/BDR-004.md) — décision prise
-- [LRN-003](../learnings/LRN-003.md) — pattern extrait
+- [BDR-004](../../decisions/BDR-004.md) — décision prise
+- [LRN-003](../../learnings/LRN-003.md) — pattern extrait

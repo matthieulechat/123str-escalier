@@ -25,3 +25,12 @@ Clôture avec `/session-close` : `git init` (le dossier n'était pas un repo), v
 
 - [BDR-004](decisions/BDR-004.md) — serveur de dev en HTTP, mkcert retiré
 - [LRN-004](learnings/LRN-004.md) — verrous AutoCAD à ignorer dans git
+
+---
+
+Migration de l'UI vers shadcn/ui (style base-nova) à la demande de Baptiste : alias `@` ajouté dans `tsconfig.json` et `vite.config.ts`, puis Card, Button, Input, Label, NativeSelect, Checkbox, Alert, Badge, Table et Collapsible remplacent le Tailwind posé sur les éléments natifs. Les figures et panneaux repliables passent par deux enveloppes partagées (`FigureCard`, `CollapsibleCard`). Le CLI a cassé le build sous Windows (import `cn`, paquet npm `cn`, `utils.ts` circulaire), corrigé à la main. Lint, build, `stair.check.ts` et vérification dans le navigateur OK. Commits `9ee05ac` (UI) et `888795a` (changelog), poussés. Le thème reste neutre : les tokens « Mètre ruban » restent à appliquer.
+
+**Entrées clés :**
+
+- [BDR-005](decisions/BDR-005.md) — UI sur shadcn/ui, thème neutre provisoire
+- [BLK-004](blockers/BLK-004.md) — build cassé par le CLI shadcn sous Windows

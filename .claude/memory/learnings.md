@@ -11,3 +11,5 @@ register: learnings
 | [LRN-003](learnings/LRN-003.md) | 2026-10-16 | Aperçu Claude refuse la CA mkcert fraîchement installée | #mkcert #https #claude-browser #certificat #schannel #curl |
 | [LRN-004](learnings/LRN-004.md) | 2026-10-16 | `.dwl` / `.dwl2` = verrous AutoCAD à ignorer dans git | #autocad #dwg #gitignore #lock-file #git |
 | [LRN-005](learnings/LRN-005.md) | 2026-10-16 | Heredocs Bash avec apostrophes : « unexpected EOF » | #claude-code #bash #heredoc #quoting #write-tool #windows |
+| [LRN-006](learnings/LRN-006.md) | 2026-10-16 | shadcn CLI 4.21 Windows : `cn` npm au lieu de `@/lib/utils` | #shadcn #windows #cli #cn #clsx #tailwind-merge #path-alias |
+| [LRN-007](learnings/LRN-007.md) | 2026-10-16 | `perl -0pi` multi-lignes pour refactorer du JSX : à éviter | #claude-code #perl #regex #refactor #jsx #edit-tool |
