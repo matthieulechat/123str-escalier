@@ -43,4 +43,13 @@ Export DXF du plan pour AutoCAD (`src/dxf.ts`, bouton « Export DXF » dans l'en
 
 - [BDR-007](decisions/BDR-007.md) — correspondance avec les calques ABAK
 - [BDR-008](decisions/BDR-008.md) — 4 orientations dans l'export
-- [BLK-005](blockers/BLK-005.md) — numéros en contact avec les traits
+- [ZBLK-005](archive/blockers/ZBLK-005.md) — numéros en contact avec les traits
+
+---
+
+Réorganisation des résultats à la demande de Baptiste. Le volet *Tableau des valeurs par contremarche* est sorti de `Results.tsx` dans `ValuesTable.tsx` et placé sous le plan, après deux déplacements faux du composant `Results` entier (le libellé n'avait pas été cherché dans le code). Coupe développée, détail au départ et plan passent en volets repliables (`CollapsibleCard`, qui gagne les props `legend` et `action`, `FigureCard` supprimé) ; seul le plan est ouvert au chargement, Export DXF visible même replié, et le lexique est désormais fermé. react-doctor 100/100 sur les fichiers modifiés. [ZBLK-005](archive/blockers/ZBLK-005.md) archivé. Entrées gardées en local, à la demande de Baptiste. Commit `e7b7241`, poussé.
+
+**Entrées clés :**
+
+- [BDR-009](decisions/BDR-009.md) — résultats en volets repliables, seul le plan ouvert
+- [BLK-006](blockers/BLK-006.md) — « tableau des valeurs » mal identifié

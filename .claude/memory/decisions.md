@@ -14,3 +14,4 @@ register: decisions
 | [BDR-006](decisions/BDR-006.md) | 2026-10-16 | Export DXF R12 généré dans le navigateur, pas de DWG | #dxf #dwg #autocad #export #r12 #navigateur | actif |
 | [BDR-007](decisions/BDR-007.md) | 2026-10-16 | Correspondance des tracés avec les calques ABAK | #dxf #calques #abak #autocad #convention #dessinateur | actif |
 | [BDR-008](decisions/BDR-008.md) | 2026-10-16 | 4 orientations dans l'export, pas de bouton rotation | #dxf #rotation #orientation #plan-archi #ux | actif |
+| [BDR-009](decisions/BDR-009.md) | 2026-10-16 | Résultats en volets repliables, seul le plan ouvert | #ui #layout #collapsible #plan #export-dxf #ux | actif |

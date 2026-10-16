@@ -16,3 +16,5 @@ register: learnings
 | [LRN-008](learnings/LRN-008.md) | 2026-10-16 | Texte DXF plus large dans AutoCAD que dans l'aperçu SVG | #dxf #autocad #text #font #measurement #rendu |
 | [LRN-009](learnings/LRN-009.md) | 2026-10-16 | Texte sans collision : grille + test segment/boîte | #collision #text-placement #liang-barsky #geometry #labels #dxf |
 | [LRN-010](learnings/LRN-010.md) | 2026-10-16 | `node -e "…"` en Bash expande backticks et `${}` | #claude-code #bash #quoting #node #edit-tool #windows |
+| [LRN-011](learnings/LRN-011.md) | 2026-10-16 | Bloc UI nommé : chercher par titre affiché, pas composant | #ui #vocabulaire #grep #composant #layout #react |
+| [LRN-012](learnings/LRN-012.md) | 2026-10-16 | Formateur hook : un remplacement par chaîne échoue sans bruit | #claude-code #formatter #hook #quotes #python #refactor |

@@ -1,11 +1,11 @@
 ---
-id: BLK-005
+id: ZBLK-005
 type: blocker
 date: 2026-10-16
 tags: [dxf, autocad, text, collision, rotation, placement]
 ---
 
-# BLK-005 — Numéros DXF en contact avec les traits
+# ZBLK-005 — Numéros DXF en contact avec les traits
 
 | Friction | Cause réelle | Solution | Statut |
 | --- | --- | --- | --- |
@@ -13,5 +13,5 @@ tags: [dxf, autocad, text, collision, rotation, placement]
 
 ## Références
 
-- [LRN-008](../learnings/LRN-008.md) — largeur réelle du texte
-- [LRN-009](../learnings/LRN-009.md) — placement sans collision
+- [LRN-008](../../learnings/LRN-008.md) — largeur réelle du texte
+- [LRN-009](../../learnings/LRN-009.md) — placement sans collision

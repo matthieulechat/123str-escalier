@@ -6,4 +6,4 @@ register: blockers
 
 | ID                             | Date       | Friction                                   | Tags                                   | Statut |
 | ------------------------------ | ---------- | ------------------------------------------ | -------------------------------------- | ------ |
-| [BLK-005](blockers/BLK-005.md) | 2026-10-16 | Numéros DXF en contact avec les traits | #dxf #autocad #text #collision #rotation #placement | résolu |
+| [BLK-006](blockers/BLK-006.md) | 2026-10-16 | « Tableau des valeurs » mal identifié, deux déplacements faux | #ui #layout #vocabulaire #composant #results | résolu |
