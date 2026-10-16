@@ -19,6 +19,7 @@ project adheres to [Semantic Versioning](https://semver.org/).
 - Tableau des valeurs par contremarche (girons, collets, cumuls de traçage) et lexique du vocabulaire, en panneaux repliables.
 - Impression de la page.
 - Application installable (PWA) avec icônes, logo et image d'aperçu pour le partage de lien.
+- Export DXF du plan pour AutoCAD : tracés sur les calques du bureau (limons, contremarches brutes et finies), ligne de foulée avec double ligne de départ et flèche d'arrivée, numéros de marche côté jour, dans les 4 orientations pour se caler sur le plan archi.
 
 ### Changed
 

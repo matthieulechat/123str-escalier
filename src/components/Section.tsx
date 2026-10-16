@@ -1,19 +1,21 @@
 import type { ReactNode } from 'react'
 import { ChevronDownIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
 interface FigureCardProps {
   title: string
   legend?: ReactNode
+  action?: ReactNode
   children: ReactNode
 }
 
-export const FigureCard = ({ title, legend, children }: FigureCardProps) => (
+export const FigureCard = ({ title, legend, action, children }: FigureCardProps) => (
   <Card role="figure" aria-label={title}>
     <CardHeader>
       <CardTitle>{title}</CardTitle>
+      {action && <CardAction>{action}</CardAction>}
     </CardHeader>
     <CardContent className="flex flex-col gap-2">
       {children}

@@ -1,3 +1,6 @@
+import { DownloadIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { downloadDxf } from '../dxf.ts'
 import { FigureCard } from './Section.tsx'
 import type { Pt, StairResult } from '../stair.ts'
 import { Dim, Labels } from './Annot.tsx'
@@ -43,6 +46,12 @@ const Plan = ({ r }: { r: StairResult }) => {
   return (
     <FigureCard
       title="Plan"
+      action={
+        <Button variant="outline" size="sm" onClick={() => downloadDxf(r)} title="Tracés seuls, dans les 4 orientations. Ouvrir dans AutoCAD puis Enregistrer sous DWG.">
+          <DownloadIcon aria-hidden="true" />
+          Export DXF
+        </Button>
+      }
       legend={
         <p className="flex flex-wrap gap-x-4 gap-y-1">
           <span>━ brut (béton)</span>
