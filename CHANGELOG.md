@@ -18,3 +18,8 @@ project adheres to [Semantic Versioning](https://semver.org/).
 - Coupe développée sur la ligne de foulée (profil fini, profil brut, paillasse, dalle palier) et détail annoté du départ.
 - Tableau des valeurs par contremarche (girons, collets, cumuls de traçage) et lexique du vocabulaire, en panneaux repliables.
 - Impression de la page.
+- Application installable (PWA) avec icônes, logo et image d'aperçu pour le partage de lien.
+
+### Changed
+
+- Interface refondue avec des composants homogènes (cartes, champs, listes déroulantes, cases à cocher, badges de contrôle, tableau).
