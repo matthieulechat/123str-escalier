@@ -42,8 +42,9 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-muted/40">
-      <header className="flex items-center justify-between border-b bg-background px-6 py-3">
-        <h1 className="text-lg font-bold">
+      <header className="chalk-line flex items-center justify-between bg-background px-6 py-3">
+        <h1 className="flex items-center gap-3 font-heading text-lg font-extrabold">
+          <img src="/icon.svg" alt="" width={36} height={36} />
           Escalier béton — calcul des dimensions
         </h1>
         <Button onClick={() => window.print()} className="print:hidden">

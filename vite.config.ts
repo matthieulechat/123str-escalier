@@ -20,8 +20,8 @@ export default defineConfig({
         name: 'Escalier béton',
         short_name: 'Escalier béton',
         description: 'Calcul des escaliers béton : nombre de marches, h, g, niveaux bruts et balancement.',
-        theme_color: '#1a1a1a',
-        background_color: '#f5c518',
+        theme_color: '#1f4fa8',
+        background_color: '#e4e2dd',
         display: 'standalone',
         start_url: '/',
         icons: [

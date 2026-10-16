@@ -17,7 +17,7 @@ export const Callout = ({ at, to, text, fs, color = INK }: { at: Pt; to: Pt; tex
       dominantBaseline="middle"
       dx={to.x >= at.x ? fs / 4 : -fs / 4}
       paintOrder="stroke"
-      stroke="#fff"
+      style={{ stroke: 'var(--card)' }}
       strokeWidth={fs / 5}
     >
       {text}
@@ -50,7 +50,7 @@ export const Dim = ({ a, b, text, fs, offset = 0, color = INK }: { a: Pt; b: Pt;
         y={mid.y}
         fontSize={fs * 0.75}
         fill={color}
-        stroke="#fff"
+        style={{ stroke: 'var(--card)' }}
         strokeWidth={fs / 5}
         paintOrder="stroke"
         textAnchor="middle"

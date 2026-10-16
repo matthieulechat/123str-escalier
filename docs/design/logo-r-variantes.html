@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logo Creator — Escalier béton</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #07070e;
+        color: #e8e4d8;
+        font-family: "IBM Plex Sans", sans-serif;
+        padding: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+      }
+      .subtitle {
+        font-size: 0.85rem;
+        color: #6b7280;
+        margin-bottom: 1.25rem;
+      }
+      .palette {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 2.5rem;
+        flex-wrap: wrap;
+      }
+      .swatch {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .swatch-label {
+        font-size: 0.65rem;
+        color: #6b7280;
+        text-align: center;
+        margin-top: 2px;
+        font-family: "IBM Plex Mono", monospace;
+      }
+      .group {
+        margin-bottom: 2.5rem;
+      }
+      .group-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #6b7280;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        border-left: 3px solid #3d6acc;
+        padding-left: 0.75rem;
+      }
+      .group-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 1rem;
+      }
+      .card {
+        background: #111827;
+        border-radius: 12px;
+        padding: 1.25rem;
+        border: 1px solid #1f2937;
+      }
+      .card-label {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.7rem;
+        color: #6b7280;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.08em;
+      }
+      .card-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.2rem;
+      }
+      .card-desc {
+        font-size: 0.75rem;
+        color: #9ca3af;
+        margin-bottom: 0.875rem;
+        line-height: 1.4;
+      }
+      .preview-main {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 0.75rem;
+      }
+      .preview-strip {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.5rem;
+      }
+      .footer-note {
+        margin-top: 2rem;
+        padding: 1rem 1.25rem;
+        background: #111827;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        color: #9ca3af;
+        border-left: 3px solid #3d6acc;
+        line-height: 1.6;
+      }
+      @media (max-width: 1100px) {
+        .group-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media (max-width: 700px) {
+        .group-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Escalier béton — Logo Creator</h1>
+      <p class="subtitle">6 variantes de R (Moulage) avec le trait de craie de K, sur le fond H ou C · direction "Cordeau"</p>
+      <div class="palette"><div><div class="swatch" style="background:#1f4fa8"></div><p class="swatch-label">--primary<br>#1f4fa8</p></div><div><div class="swatch" style="background:#e4e2dd"></div><p class="swatch-label">--background<br>#e4e2dd</p></div><div><div class="swatch" style="background:#f1f0ec"></div><p class="swatch-label">--secondary<br>#f1f0ec</p></div><div><div class="swatch" style="background:#23262a"></div><p class="swatch-label">--foreground<br>#23262a</p></div><div><div class="swatch" style="background:#a8321c"></div><p class="swatch-label">--accent<br>#a8321c</p></div><div><div class="swatch" style="background:#5b5e64"></div><p class="swatch-label">--muted<br>#5b5e64</p></div></div>
+    </header>
+
+    <section class="group"><h2 class="group-label">R + craie — fond H ou C</h2><div class="group-grid" style="grid-template-columns:repeat(3,1fr)"><article class="card"><p class="card-label">R1</p><h3 class="card-title">Fond H + craie en pied</h3><p class="card-desc">Dégradé vertical H, marque blanche, trait de craie de K sous la volée. Contraste marque/fond : 4.76:1</p><div class="preview-main"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="180" height="180" role="img" aria-label="Logo R1"><defs><clipPath id="clip-R1"><rect width="512" height="512" rx="108"/></clipPath><linearGradient id="gH-R1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4c72b9"/><stop offset="100%" stop-color="#1f4fa8"/></linearGradient></defs><rect width="512" height="512" rx="108" fill="url(#gH-R1)"/><g clip-path="url(#clip-R1)"><line x1="-20" y1="452" x2="532" y2="440" stroke="#f1f0ec" stroke-width="8" stroke-dasharray="45 7 22 3" opacity="0.7"/></g><g transform="translate(102.4,102.4) scale(1.2)"><path d="M32 32H224V48H168V96H120V144H72V192H32Z" fill="#ffffff" opacity="0.35"/><path d="M32 208H88V160H136V112H184V64H224V224H32Z" fill="#ffffff"/></g></svg></div></article>
+<article class="card"><p class="card-label">R2</p><h3 class="card-title">Fond C + craie en pied</h3><p class="card-desc">Béton clair C, marque bleu cordeau, trait de craie bleu en pied. Contraste marque/fond : 5.92:1</p><div class="preview-main"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="180" height="180" role="img" aria-label="Logo R2"><defs><clipPath id="clip-R2"><rect width="512" height="512" rx="108"/></clipPath></defs><rect width="512" height="512" rx="108" fill="#e4e2dd"/><g clip-path="url(#clip-R2)"><line x1="-20" y1="452" x2="532" y2="440" stroke="#1f4fa8" stroke-width="8" stroke-dasharray="45 7 22 3" opacity="0.8"/></g><g transform="translate(102.4,102.4) scale(1.2)"><path d="M32 32H224V48H168V96H120V144H72V192H32Z" fill="#1f4fa8" opacity="0.3"/><path d="M32 208H88V160H136V112H184V64H224V224H32Z" fill="#1f4fa8"/></g></svg></div></article>
+<article class="card"><p class="card-label">R3</p><h3 class="card-title">Fond H + craie dans le joint</h3><p class="card-desc">Le cordeau est claqué dans le joint en marches et file jusqu’aux bords. Contraste marque/fond : 4.76:1</p><div class="preview-main"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="180" height="180" role="img" aria-label="Logo R3"><defs><clipPath id="clip-R3"><rect width="512" height="512" rx="108"/></clipPath><linearGradient id="gH-R3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4c72b9"/><stop offset="100%" stop-color="#1f4fa8"/></linearGradient></defs><rect width="512" height="512" rx="108" fill="url(#gH-R3)"/><g transform="translate(102.4,102.4) scale(1.2)"><path d="M32 32H224V48H168V96H120V144H72V192H32Z" fill="#ffffff" opacity="0.35"/><path d="M32 208H88V160H136V112H184V64H224V224H32Z" fill="#ffffff"/></g><g clip-path="url(#clip-R3)"><g transform="translate(102.4,102.4) scale(1.2)"><path d="M-90 200H80V152H128V104H176V56H330" fill="none" stroke="#f1f0ec" stroke-width="5" stroke-dasharray="37 6 18 2.5" opacity="0.9"/></g></g></svg></div></article>
+<article class="card"><p class="card-label">R4</p><h3 class="card-title">Fond C + craie rouge dans le joint</h3><p class="card-desc">Béton clair, marque bleue, cordeau en craie rouge dans le joint. Contraste marque/fond : 5.17:1</p><div class="preview-main"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="180" height="180" role="img" aria-label="Logo R4"><defs><clipPath id="clip-R4"><rect width="512" height="512" rx="108"/></clipPath></defs><rect width="512" height="512" rx="108" fill="#e4e2dd"/><g transform="translate(102.4,102.4) scale(1.2)"><path d="M32 32H224V48H168V96H120V144H72V192H32Z" fill="#1f4fa8" opacity="0.3"/><path d="M32 208H88V160H136V112H184V64H224V224H32Z" fill="#1f4fa8"/></g><g clip-path="url(#clip-R4)"><g transform="translate(102.4,102.4) scale(1.2)"><path d="M-90 200H80V152H128V104H176V56H330" fill="none" stroke="#a8321c" stroke-width="5" stroke-dasharray="37 6 18 2.5" opacity="0.9"/></g></g></svg></div></article>
+<article class="card"><p class="card-label">R5</p><h3 class="card-title">Fond H + ligne de pente</h3><p class="card-desc">Cordeau tendu en diagonale sur les nez de marche, comme pour tracer la pente. Contraste marque/fond : 4.76:1</p><div class="preview-main"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="180" height="180" role="img" aria-label="Logo R5"><defs><clipPath id="clip-R5"><rect width="512" height="512" rx="108"/></clipPath><linearGradient id="gH-R5" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4c72b9"/><stop offset="100%" stop-color="#1f4fa8"/></linearGradient></defs><rect width="512" height="512" rx="108" fill="url(#gH-R5)"/><g transform="translate(102.4,102.4) scale(1.2)"><path d="M32 32H224V48H168V96H120V144H72V192H32Z" fill="#ffffff" opacity="0.35"/><path d="M32 208H88V160H136V112H184V64H224V224H32Z" fill="#ffffff"/></g><g clip-path="url(#clip-R5)"><line x1="-20" y1="522.4" x2="532" y2="-29.6" stroke="#f1f0ec" stroke-width="7" stroke-dasharray="45 7 22 3" opacity="0.75"/></g></svg></div></article>
+<article class="card"><p class="card-label">R6</p><h3 class="card-title">Fond C + ligne de pente rouge</h3><p class="card-desc">Béton clair, marque bleue, ligne de pente en craie rouge. Contraste marque/fond : 5.17:1</p><div class="preview-main"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="180" height="180" role="img" aria-label="Logo R6"><defs><clipPath id="clip-R6"><rect width="512" height="512" rx="108"/></clipPath></defs><rect width="512" height="512" rx="108" fill="#e4e2dd"/><g transform="translate(102.4,102.4) scale(1.2)"><path d="M32 32H224V48H168V96H120V144H72V192H32Z" fill="#1f4fa8" opacity="0.3"/><path d="M32 208H88V160H136V112H184V64H224V224H32Z" fill="#1f4fa8"/></g><g clip-path="url(#clip-R6)"><line x1="-20" y1="522.4" x2="532" y2="-29.6" stroke="#a8321c" stroke-width="7" stroke-dasharray="45 7 22 3" opacity="0.85"/></g></svg></div></article></div></section>
+
+    <div class="footer-note">
+      Réponds avec R1 à R6, ou décris un ajustement. Le bloc supérieur (la cage) est volontairement en transparence : c’est un plan secondaire, la marche pleine porte le contraste.
+    </div>
+  </body>
+</html>
