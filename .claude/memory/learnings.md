@@ -13,3 +13,6 @@ register: learnings
 | [LRN-005](learnings/LRN-005.md) | 2026-10-16 | Heredocs Bash avec apostrophes : « unexpected EOF » | #claude-code #bash #heredoc #quoting #write-tool #windows |
 | [LRN-006](learnings/LRN-006.md) | 2026-10-16 | shadcn CLI 4.21 Windows : `cn` npm au lieu de `@/lib/utils` | #shadcn #windows #cli #cn #clsx #tailwind-merge #path-alias |
 | [LRN-007](learnings/LRN-007.md) | 2026-10-16 | `perl -0pi` multi-lignes pour refactorer du JSX : à éviter | #claude-code #perl #regex #refactor #jsx #edit-tool |
+| [LRN-008](learnings/LRN-008.md) | 2026-10-16 | Texte DXF plus large dans AutoCAD que dans l'aperçu SVG | #dxf #autocad #text #font #measurement #rendu |
+| [LRN-009](learnings/LRN-009.md) | 2026-10-16 | Texte sans collision : grille + test segment/boîte | #collision #text-placement #liang-barsky #geometry #labels #dxf |
+| [LRN-010](learnings/LRN-010.md) | 2026-10-16 | `node -e "…"` en Bash expande backticks et `${}` | #claude-code #bash #quoting #node #edit-tool #windows |

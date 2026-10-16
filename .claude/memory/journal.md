@@ -13,7 +13,7 @@ Vues : saisie directement sur des schémas de plan et de coupe, plan calculé (b
 - [BDR-001](decisions/BDR-001.md) — volées cotées jusqu'au mur du fond
 - [BDR-002](decisions/BDR-002.md) — règles du bureau uniquement
 - [LRN-001](learnings/LRN-001.md) — formule fermée de la herse
-- [BLK-002](blockers/BLK-002.md) — export DWG en attente
+- [ZBLK-002](archive/blockers/ZBLK-002.md) — export DWG en attente
 
 ---
 
@@ -33,4 +33,14 @@ Migration de l'UI vers shadcn/ui (style base-nova) à la demande de Baptiste : a
 **Entrées clés :**
 
 - [BDR-005](decisions/BDR-005.md) — UI sur shadcn/ui, thème neutre provisoire
-- [BLK-004](blockers/BLK-004.md) — build cassé par le CLI shadcn sous Windows
+- [ZBLK-004](archive/blockers/ZBLK-004.md) — build cassé par le CLI shadcn sous Windows
+
+---
+
+Export DXF du plan pour AutoCAD (`src/dxf.ts`, bouton « Export DXF » dans l'en-tête de la carte Plan). Un DWG natif étant hors de portée sans bibliothèque, l'export produit un DXF R12 que les dessinateurs ouvrent ou insèrent dans AutoCAD. Itérations avec Baptiste, captures AutoCAD à l'appui : calques du gabarit ABAK à la place de calques maison, 1re et dernière CM brute en vu, ligne de foulée sur `ABAK_A-COTA` avec double ligne de départ et flèche ouverte, numéros 01, 02… en italique côté jour près de la contremarche. Un bouton de rotation a été livré puis remplacé par l'export des 4 orientations côte à côte. Les numéros touchaient les traits dans AutoCAD (police plus large que l'aperçu, texte horizontal dans les vues tournées) : réglé par une recherche de la position libre la plus proche, vérifiée sur 5 escaliers. [ZBLK-002](archive/blockers/ZBLK-002.md) (DWG illisible) est clos et archivé, comme [ZBLK-004](archive/blockers/ZBLK-004.md). Toutes les entrées restent locales, à la demande de Baptiste. Commit `6c5033a`, poussé.
+
+**Entrées clés :**
+
+- [BDR-007](decisions/BDR-007.md) — correspondance avec les calques ABAK
+- [BDR-008](decisions/BDR-008.md) — 4 orientations dans l'export
+- [BLK-005](blockers/BLK-005.md) — numéros en contact avec les traits

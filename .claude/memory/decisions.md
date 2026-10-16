@@ -11,3 +11,6 @@ register: decisions
 | [BDR-003](decisions/BDR-003.md) | 2026-10-16 | Ligne de foulée en arc dans le tournant       | #foulee #balancement #herse #geometrie #tournant | actif  |
 | [BDR-004](decisions/BDR-004.md) | 2026-10-16 | Serveur de dev en HTTP, mkcert retiré | #vite #mkcert #https #devserver #preview | actif |
 | [BDR-005](decisions/BDR-005.md) | 2026-10-16 | UI sur shadcn/ui base-nova, thème neutre provisoire | #shadcn #ui #base-ui #theming #composants #tailwind | actif |
+| [BDR-006](decisions/BDR-006.md) | 2026-10-16 | Export DXF R12 généré dans le navigateur, pas de DWG | #dxf #dwg #autocad #export #r12 #navigateur | actif |
+| [BDR-007](decisions/BDR-007.md) | 2026-10-16 | Correspondance des tracés avec les calques ABAK | #dxf #calques #abak #autocad #convention #dessinateur | actif |
+| [BDR-008](decisions/BDR-008.md) | 2026-10-16 | 4 orientations dans l'export, pas de bouton rotation | #dxf #rotation #orientation #plan-archi #ux | actif |

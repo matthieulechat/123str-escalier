@@ -1,11 +1,11 @@
 ---
-id: BLK-004
+id: ZBLK-004
 type: blocker
 date: 2026-10-16
 tags: [shadcn, windows, cli, build, imports]
 ---
 
-# BLK-004 — Build cassé après `shadcn init` (import `cn`, utils circulaire)
+# ZBLK-004 — Build cassé après `shadcn init` (import `cn`, utils circulaire)
 
 | Friction | Cause réelle | Solution | Statut |
 | --- | --- | --- | --- |
@@ -13,4 +13,4 @@ tags: [shadcn, windows, cli, build, imports]
 
 ## Références
 
-- [LRN-006](../learnings/LRN-006.md) — pattern extrait
+- [LRN-006](../../learnings/LRN-006.md) — pattern extrait
