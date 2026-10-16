@@ -2,12 +2,13 @@ import { useMemo, useState } from "react";
 import { PrinterIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { computeStair, type StairInput } from "./stair.ts";
+import { computeStair, type StairInput, type StairResult } from "./stair.ts";
 import Saisie from "./components/Saisie/index.tsx";
 import Herse from "./components/Herse.tsx";
 import Results from "./components/Results.tsx";
 import ValuesTable from "./components/ValuesTable.tsx";
 import Plan from "./components/Plan.tsx";
+import Vue3D from "./components/Vue3D.tsx";
 import Coupe from "./components/Coupe.tsx";
 import Detail from "./components/Detail.tsx";
 import Glossary from "./components/Glossary.tsx";
@@ -35,6 +36,9 @@ const DEFAULTS: StairInput = {
 const App = () => {
   const [input, setInput] = useState<StairInput>(DEFAULTS);
   const result = useMemo(() => computeStair(input), [input]);
+  // Dernier calcul valide (mise à jour pendant le rendu, motif React « état dérivé du précédent »).
+  const [lastOk, setLastOk] = useState<StairResult | null>(null);
+  if (!("error" in result) && result !== lastOk) setLastOk(result);
 
   return (
     <div className="min-h-screen bg-muted/40">
@@ -49,18 +53,24 @@ const App = () => {
       </header>
       <main className="mx-auto flex max-w-6xl flex-col gap-6 p-6">
         <Saisie value={input} onChange={setInput} />
-        {"error" in result ? (
-          <Alert variant="destructive">
+        {"error" in result && (
+          <Alert variant="destructive" aria-live="polite">
             <AlertDescription>{result.error}</AlertDescription>
           </Alert>
-        ) : (
-          <section className="flex min-w-0 flex-col gap-6">
-            <Results r={result} />
-            <Plan r={result} />
-            <ValuesTable r={result} />
-            <Herse r={result} />
-            <Coupe r={result} />
-            <Detail r={result} />
+        )}
+        {/* Masqué (pas démonté) pendant une saisie invalide : les volets gardent leur état ouvert/fermé. */}
+        {lastOk && (
+          <section
+            hidden={"error" in result}
+            className="flex min-w-0 flex-col gap-6"
+          >
+            <Results r={lastOk} />
+            <Plan r={lastOk} />
+            <Vue3D r={lastOk} />
+            <ValuesTable r={lastOk} />
+            <Herse r={lastOk} />
+            <Coupe r={lastOk} />
+            <Detail r={lastOk} />
             <Glossary />
           </section>
         )}

@@ -20,8 +20,13 @@ project adheres to [Semantic Versioning](https://semver.org/).
 - Impression de la page.
 - Application installable (PWA) avec icônes, logo et image d'aperçu pour le partage de lien.
 - Export DXF du plan pour AutoCAD : tracés sur les calques du bureau (limons, contremarches brutes et finies), ligne de foulée avec double ligne de départ et flèche d'arrivée, numéros de marche côté jour, dans les 4 orientations pour se caler sur le plan archi.
+- Vue 3D orientable de l'escalier (rotation, zoom, déplacement) : marches et paillasse en béton brut, finitions de marche et de contremarche, marches balancées en bleu, avec des cases à cocher pour masquer les finitions ou la couleur des balancées. Chargée seulement à l'ouverture de son panneau.
 
 ### Changed
 
 - Interface refondue avec des composants homogènes (cartes, champs, listes déroulantes, cases à cocher, badges de contrôle, tableau).
 - Résultats réorganisés : synthèse et contrôles en tête, puis plan, tableau des valeurs, herse, coupe développée, détail et lexique. Toutes ces sections se replient ; seul le plan est ouvert au départ, avec l'export DXF accessible même replié.
+
+### Fixed
+
+- Les panneaux de résultats ne se referment plus quand une saisie passe par une valeur invalide (champ vidé ou en cours de frappe).
