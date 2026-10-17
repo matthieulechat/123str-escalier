@@ -72,7 +72,7 @@ Refonte complète de l'identité visuelle via `/brand-creator`, à la place de �
 
 - [BDR-012](decisions/BDR-012.md) — identité « Cordeau » appliquée à l'app
 - [BLK-010](blockers/BLK-010.md) — `pnpm add` bloqué par `minimumReleaseAge`
-- [BLK-011](blockers/BLK-011.md) — push refusé sur le repo de Matthieu
+- [ZBLK-011](archive/blockers/ZBLK-011.md) — push refusé sur le repo de Matthieu
 
 ## 2026-10-17
 
@@ -82,3 +82,13 @@ Session de finition du panneau de saisie, au fil des retours de Baptiste sur cap
 
 - [BDR-013](decisions/BDR-013.md) — saisie dans un CollapsibleCard nommé region
 - [BDR-014](decisions/BDR-014.md) — verrous de saisie non persistés
+
+---
+
+Session sur les coupes. Lignes de coupe A, B, C… ajoutées au plan, à 20 cm de chaque mur extérieur, regard vers le jour ; d'abord rapprochées pour ne plus toucher les cotes, puis allongées au-delà des cotes à la demande de Baptiste. Le moteur expose `cutLines()` / `cutProfile()` et l'export DXF trace les coupes sur une ligne sous les 4 vues en plan (fini en CA, brut et sous-face en COFFRAGE-VU), puis les lignes de coupe sur les vues en plan. Retours successifs après ouverture dans AutoCAD : 100 cm de plancher au départ et de palier à l'arrivée, nouveau champ « Plancher bas », lignes de coupe et traits de fin de coupe sur `ABAK_A-AXE` (traversant la finition), puis jonction monolithe entre le plancher bas et la paillasse. Deux retouches du schéma de saisie (légende masquée, repère caché). Vérifications par aperçu SVG du DXF servi par le serveur de dev ; contrôles ajoutés dans `stair.check.ts`. Une commande Bash a bloqué 120 s sur une ligne `cat >` parasite, et un `grep` via rtk a laissé croire à tort qu'un `sed` avait échoué. react-doctor 96/100, lint et build verts, commit `b8c2e67` poussé : le push fonctionne de nouveau, [ZBLK-011](archive/blockers/ZBLK-011.md) archivé.
+
+**Entrées clés :**
+
+- [BDR-015](decisions/BDR-015.md) — coupes à 20 cm de chaque mur extérieur
+- [BDR-016](decisions/BDR-016.md) — calques des coupes DXF
+- [BDR-017](decisions/BDR-017.md) — plancher et jonction monolithe

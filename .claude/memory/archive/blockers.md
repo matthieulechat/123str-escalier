@@ -15,3 +15,4 @@ register: archive_blockers
 | [ZBLK-007](blockers/ZBLK-007.md) | 2026-10-16 | Volets refermés à chaque changement de valeur | #ui #collapsible #state #unmount #saisie | résolu |
 | [ZBLK-008](blockers/ZBLK-008.md) | 2026-10-16 | `pnpm add three` : EPERM sur `package.json` | #pnpm #windows #eperm #package-json #lock | résolu |
 | [ZBLK-009](blockers/ZBLK-009.md) | 2026-10-16 | `pnpm lint` réécrit en eslint par rtk | #rtk #lint #tsc #command-rewriting #tooling | résolu |
+| [ZBLK-011](blockers/ZBLK-011.md) | 2026-10-16 | `git push` refusé (403) sur le repo de Matthieu | #git #github #permissions #push #collaboration | résolu |

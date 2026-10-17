@@ -20,3 +20,6 @@ register: decisions
 | [BDR-012](decisions/BDR-012.md) | 2026-10-16 | Identité « Cordeau » appliquée à l'app | #branding #theming #shadcn #logo #og-image #pwa | actif |
 | [BDR-013](decisions/BDR-013.md) | 2026-10-17 | Saisie dans un CollapsibleCard ouvert, nommé region | #ui #saisie #collapsible #a11y #aria #layout | actif |
 | [BDR-014](decisions/BDR-014.md) | 2026-10-17 | Verrous de saisie : champ désactivé, non persistés | #saisie #lock #ux #react-context #state #faute-de-frappe | actif |
+| [BDR-015](decisions/BDR-015.md) | 2026-10-17 | Coupes : une par mur extérieur, à 20 cm, vers le jour | #coupe #plan #dxf #convention #dessinateur #geometrie | actif |
+| [BDR-016](decisions/BDR-016.md) | 2026-10-17 | Calques des coupes DXF : CA / COFFRAGE-VU / A-AXE | #dxf #calques #abak #coupe #autocad #convention | actif |
+| [BDR-017](decisions/BDR-017.md) | 2026-10-17 | Coupes : 100 cm de plancher, béton d'un seul tenant | #coupe #plancher #paillasse #dalle #saisie #dxf | actif |

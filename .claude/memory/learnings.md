@@ -22,3 +22,6 @@ register: learnings
 | [LRN-014](learnings/LRN-014.md) | 2026-10-16 | Satori n'affiche pas un `<img>` SVG : logo en PNG | #satori #resvg-js #og-image #svg #png #brand-creator |
 | [LRN-015](learnings/LRN-015.md) | 2026-10-17 | Carte absolue en bas d'un schéma : déborde de sa boîte | #layout #absolute #svg #aspect-ratio #margin #saisie |
 | [LRN-016](learnings/LRN-016.md) | 2026-10-17 | Ancre SVG : vérifier avec `isPointInFill`, pas à l'œil | #svg #annotations #ispointinfill #verification #browser #leader-line |
+| [LRN-017](learnings/LRN-017.md) | 2026-10-17 | Contrôler un DXF : SVG servi par `public/` du serveur | #dxf #svg #preview #claude-browser #verification #vite |
+| [LRN-018](learnings/LRN-018.md) | 2026-10-17 | `grep` via rtk : `\|` non géré, « 0 matches » trompeur | #rtk #grep #ripgrep #regex #verification #claude-code |
+| [LRN-019](learnings/LRN-019.md) | 2026-10-17 | Bash bloqué 120 s : `cat > fichier` sans heredoc | #claude-code #bash #stdin #heredoc #timeout #background |
