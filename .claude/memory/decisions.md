@@ -18,3 +18,5 @@ register: decisions
 | [BDR-010](decisions/BDR-010.md) | 2026-10-16 | Vue 3D three.js lazy-loadée dans un volet fermé | #3d #threejs #lazy-load #bundle #collapsible #ui | actif |
 | [BDR-011](decisions/BDR-011.md) | 2026-10-16 | Paillasse 3D : même convention que la Coupe | #3d #paillasse #sous-face #convention #coupe #balancement | actif |
 | [BDR-012](decisions/BDR-012.md) | 2026-10-16 | Identité « Cordeau » appliquée à l'app | #branding #theming #shadcn #logo #og-image #pwa | actif |
+| [BDR-013](decisions/BDR-013.md) | 2026-10-17 | Saisie dans un CollapsibleCard ouvert, nommé region | #ui #saisie #collapsible #a11y #aria #layout | actif |
+| [BDR-014](decisions/BDR-014.md) | 2026-10-17 | Verrous de saisie : champ désactivé, non persistés | #saisie #lock #ux #react-context #state #faute-de-frappe | actif |

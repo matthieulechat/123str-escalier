@@ -20,3 +20,5 @@ register: learnings
 | [LRN-012](learnings/LRN-012.md) | 2026-10-16 | Formateur hook : un remplacement par chaîne échoue sans bruit | #claude-code #formatter #hook #quotes #python #refactor |
 | [LRN-013](learnings/LRN-013.md) | 2026-10-16 | Halo SVG `stroke="#fff"` visible dès que le fond change | #svg #theming #paint-order #css-variables #annotations #react |
 | [LRN-014](learnings/LRN-014.md) | 2026-10-16 | Satori n'affiche pas un `<img>` SVG : logo en PNG | #satori #resvg-js #og-image #svg #png #brand-creator |
+| [LRN-015](learnings/LRN-015.md) | 2026-10-17 | Carte absolue en bas d'un schéma : déborde de sa boîte | #layout #absolute #svg #aspect-ratio #margin #saisie |
+| [LRN-016](learnings/LRN-016.md) | 2026-10-17 | Ancre SVG : vérifier avec `isPointInFill`, pas à l'œil | #svg #annotations #ispointinfill #verification #browser #leader-line |

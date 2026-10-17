@@ -73,3 +73,12 @@ Refonte complète de l'identité visuelle via `/brand-creator`, à la place de �
 - [BDR-012](decisions/BDR-012.md) — identité « Cordeau » appliquée à l'app
 - [BLK-010](blockers/BLK-010.md) — `pnpm add` bloqué par `minimumReleaseAge`
 - [BLK-011](blockers/BLK-011.md) — push refusé sur le repo de Matthieu
+
+## 2026-10-17
+
+Session de finition du panneau de saisie, au fil des retours de Baptiste sur captures. Serveur de dev relancé (config `escalier`, HTTP). La ligne Type / Sens / contremarches reçoit d'abord un titre, puis devient repliable ; Baptiste demande ensuite d'y englober Plan et Coupe : toute la saisie passe dans le `CollapsibleCard` partagé « Saisie de l'escalier », ouvert par défaut, avec une prop `regionLabel` pour conserver le repère `region` des lecteurs d'écran (expliquée simplement après une première remarque trop jargonneuse). Ajout d'un cadenas par valeur pour éviter les fautes de frappe, état remonté dans `Saisie` parce que le panneau Base UI démonte son contenu replié. Les cadenas élargissaient les cartes et faisaient passer la configuration sur deux lignes : taille `icon-2xs`, champs resserrés et cartes opaques ramènent tout sur une ligne (mesuré à 1400 px). Légende rouge du plan centrée sur le dessin de l'escalier (centre propre à chaque type) puis espacée de la cote ; repère « Finition marche » de la coupe corrigé, il pointait dans le béton. Les captures d'écran de l'aperçu échouaient : vérifications faites par script (DOM, `isPointInFill`). react-doctor 96/100 sans problème, lint et build verts, commit `b313784` (non poussé).
+
+**Entrées clés :**
+
+- [BDR-013](decisions/BDR-013.md) — saisie dans un CollapsibleCard nommé region
+- [BDR-014](decisions/BDR-014.md) — verrous de saisie non persistés
