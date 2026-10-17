@@ -1,5 +1,5 @@
 ---
-id: BLK-013
+id: ZBLK-013
 type: blocker
 date: 2026-10-17
 summary: "Patch Python inline : `\\r\\n` échappé, assert en échec"
@@ -17,5 +17,5 @@ status: résolu
 
 ## Références
 
-- [LRN-005](../learnings/LRN-005.md) — heredocs Bash et apostrophes
-- [LRN-019](../learnings/LRN-019.md) — Bash bloqué 120 s
+- [LRN-005](../../learnings/LRN-005.md) — heredocs Bash et apostrophes
+- [LRN-019](../../learnings/LRN-019.md) — Bash bloqué 120 s

@@ -13,7 +13,7 @@ register: decisions
 | [BDR-005](decisions/BDR-005.md) | 2026-10-16 | UI sur shadcn/ui base-nova, thème neutre provisoire | #shadcn #ui #base-ui #theming #composants #tailwind | actif |
 | [BDR-006](decisions/BDR-006.md) | 2026-10-16 | Export DXF R12 généré dans le navigateur, pas de DWG | #dxf #dwg #autocad #export #r12 #navigateur | actif |
 | [BDR-007](decisions/BDR-007.md) | 2026-10-16 | Correspondance des tracés avec les calques ABAK | #dxf #calques #abak #autocad #convention #dessinateur | actif |
-| [BDR-008](decisions/BDR-008.md) | 2026-10-16 | 4 orientations dans l'export, pas de bouton rotation | #dxf #rotation #orientation #plan-archi #ux | actif |
+| [BDR-008](decisions/BDR-008.md) | 2026-10-16 | 4 orientations dans l'export, pas de bouton rotation | #dxf #rotation #orientation #plan-archi #ux | inactif |
 | [BDR-009](decisions/BDR-009.md) | 2026-10-16 | Résultats en volets repliables, seul le plan ouvert | #ui #layout #collapsible #plan #export-dxf #ux | actif |
 | [BDR-010](decisions/BDR-010.md) | 2026-10-16 | Vue 3D three.js lazy-loadée dans un volet fermé | #3d #threejs #lazy-load #bundle #collapsible #ui | actif |
 | [BDR-011](decisions/BDR-011.md) | 2026-10-16 | Paillasse 3D : même convention que la Coupe | #3d #paillasse #sous-face #convention #coupe #balancement | actif |
@@ -23,5 +23,6 @@ register: decisions
 | [BDR-015](decisions/BDR-015.md) | 2026-10-17 | Coupes : une par mur extérieur, à 20 cm, vers le jour | #coupe #plan #dxf #convention #dessinateur #geometrie | actif |
 | [BDR-016](decisions/BDR-016.md) | 2026-10-17 | Calques des coupes DXF : CA / COFFRAGE-VU / A-AXES | #dxf #calques #abak #coupe #autocad #convention | actif |
 | [BDR-017](decisions/BDR-017.md) | 2026-10-17 | Coupes : 100 cm de plancher, béton d'un seul tenant | #coupe #plancher #paillasse #dalle #saisie #dxf | actif |
-| [BDR-018](decisions/BDR-018.md) | 2026-10-17 | Export DXF : ligne de plans bruts sous les plans finis | #dxf #plan #brut #export #calques #limon | actif |
+| [BDR-018](decisions/BDR-018.md) | 2026-10-17 | Export DXF : plan brut à droite du plan fini | #dxf #plan #brut #export #calques #limon | actif |
 | [BDR-019](decisions/BDR-019.md) | 2026-10-17 | Annotations DXF calquées sur EXEMPLE ESCALIER.dwg | #dxf #annotation #texte #coupe #abak #autocad | actif |
+| [BDR-020](decisions/BDR-020.md) | 2026-10-17 | Orientation choisie en config, plans et DXF tournés ensemble | #orientation #rotation #dxf #plan #saisie #ux | actif |

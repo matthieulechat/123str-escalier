@@ -1,5 +1,5 @@
 ---
-id: BLK-012
+id: ZBLK-012
 type: blocker
 date: 2026-10-17
 summary: "Numéros « trop petits » : DXF testé issu d'un ancien code"
@@ -17,4 +17,4 @@ status: résolu
 
 ## Références
 
-- [LRN-022](../learnings/LRN-022.md) — vérifier la version du fichier testé
+- [LRN-022](../../learnings/LRN-022.md) — vérifier la version du fichier testé

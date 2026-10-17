@@ -101,4 +101,13 @@ Session sur l'export DXF, au fil des retours de Baptiste. Ajout d'une ligne de p
 
 - [BDR-018](decisions/BDR-018.md) — ligne de plans bruts
 - [BDR-019](decisions/BDR-019.md) — annotations calquées sur le DWG d'exemple
-- [BLK-012](blockers/BLK-012.md) — DXF testé issu d'un ancien code
+- [ZBLK-012](archive/blockers/ZBLK-012.md) — DXF testé issu d'un ancien code
+
+---
+
+Grosse session UX sur l'orientation et la saisie. On a d'abord remplacé les 4 orientations de l'export DXF par des boutons pictogrammes (barre, L, U avec flèche de montée), d'abord comme boutons d'export, puis — à la demande de Baptiste — déplacés dans la configuration pour choisir l'orientation, l'export redevenant un bouton unique dans le volet Plan. Le type, le sens (« Inverser ») et le jour droit/arrondi sont aussi passés en boutons visuels, sur deux lignes. Ensuite gros changement : les schémas de saisie et le plan annoté tournent selon l'orientation, comme le DXF. Plusieurs retours visuels étape par étape : champs de cote verticaux qui mordaient sur l'escalier (résolu en ancrant le champ tourné à côté de la cote), droit haut/bas ramené à une seule présentation avec flèche inversée, emmarchement élargi, échelle constante en portrait, schémas centrés. Le plan annoté place désormais ses étiquettes au plus près de leur cible (recherche par anneaux avec obstacles et emprise interdite), dans des cartes bleues assorties aux champs de saisie, eux aussi passés en bleu. Petites finitions : plus de « ,0 » sur les schémas, titres en gras, plan brut à droite du fini dans le DXF. Vérifications surtout par mesure DOM, le volet navigateur ne rendant plus de captures par moments. Commit 9cf6762 poussé.
+
+**Entrées clés :**
+
+- [BDR-020](decisions/BDR-020.md) — Orientation choisie en config, plans et DXF tournés ensemble
+- [LRN-023](learnings/LRN-023.md) — Overlay HTML vertical : coller un bord au point d'ancrage

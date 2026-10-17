@@ -16,3 +16,5 @@ register: archive-blockers
 | [ZBLK-008](blockers/ZBLK-008.md) | 2026-10-16 | `pnpm add three` : EPERM sur `package.json` | #pnpm #windows #eperm #package-json #lock | résolu |
 | [ZBLK-009](blockers/ZBLK-009.md) | 2026-10-16 | `pnpm lint` réécrit en eslint par rtk | #rtk #lint #tsc #command-rewriting #tooling | résolu |
 | [ZBLK-011](blockers/ZBLK-011.md) | 2026-10-16 | `git push` refusé (403) sur le repo de Matthieu | #git #github #permissions #push #collaboration | résolu |
+| [ZBLK-012](blockers/ZBLK-012.md) | 2026-10-17 | Numéros « trop petits » : DXF testé issu d'un ancien code | #dxf #pwa #cache #cadcraft #stale-build | résolu le 2026-10-17 |
+| [ZBLK-013](blockers/ZBLK-013.md) | 2026-10-17 | Patch Python inline : `\\r\\n` échappé, assert en échec | #python #heredoc #escaping #claude-code #patch #bash | résolu le 2026-10-17 |
