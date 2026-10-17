@@ -47,7 +47,7 @@ Export DXF du plan pour AutoCAD (`src/dxf.ts`, bouton « Export DXF » dans l'en
 
 ---
 
-Réorganisation des résultats à la demande de Baptiste. Le volet *Tableau des valeurs par contremarche* est sorti de `Results.tsx` dans `ValuesTable.tsx` et placé sous le plan, après deux déplacements faux du composant `Results` entier (le libellé n'avait pas été cherché dans le code). Coupe développée, détail au départ et plan passent en volets repliables (`CollapsibleCard`, qui gagne les props `legend` et `action`, `FigureCard` supprimé) ; seul le plan est ouvert au chargement, Export DXF visible même replié, et le lexique est désormais fermé. react-doctor 100/100 sur les fichiers modifiés. [ZBLK-005](archive/blockers/ZBLK-005.md) archivé. Entrées gardées en local, à la demande de Baptiste. Commit `e7b7241`, poussé.
+Réorganisation des résultats à la demande de Baptiste. Le volet _Tableau des valeurs par contremarche_ est sorti de `Results.tsx` dans `ValuesTable.tsx` et placé sous le plan, après deux déplacements faux du composant `Results` entier (le libellé n'avait pas été cherché dans le code). Coupe développée, détail au départ et plan passent en volets repliables (`CollapsibleCard`, qui gagne les props `legend` et `action`, `FigureCard` supprimé) ; seul le plan est ouvert au chargement, Export DXF visible même replié, et le lexique est désormais fermé. react-doctor 100/100 sur les fichiers modifiés. [ZBLK-005](archive/blockers/ZBLK-005.md) archivé. Entrées gardées en local, à la demande de Baptiste. Commit `e7b7241`, poussé.
 
 **Entrées clés :**
 
@@ -92,3 +92,13 @@ Session sur les coupes. Lignes de coupe A, B, C… ajoutées au plan, à 20 cm d
 - [BDR-015](decisions/BDR-015.md) — coupes à 20 cm de chaque mur extérieur
 - [BDR-016](decisions/BDR-016.md) — calques des coupes DXF
 - [BDR-017](decisions/BDR-017.md) — plancher et jonction monolithe
+
+---
+
+Session sur l'export DXF, au fil des retours de Baptiste. Ajout d'une ligne de plans bruts entre les plans finis et les coupes (sans contremarches finies, puis sans foulée ni numéros, contremarches intermédiaires sur `COFFRAGE-FIN` en couleur du calque) et fermeture des limons jusqu'à la dernière contremarche brute dans toutes les vues en plan. Relevé des 18 calques du gabarit dans `docs/calques.md` (après deux fautes de frappe sur le nom du dossier) ; ce relevé a révélé que les lignes de coupe étaient sur `ABAK_A-AXE` au lieu de `ABAK_A-AXES`, corrigé dans le code et dans [BDR-016](decisions/BDR-016.md). Le DWG d'exemple du bureau, illisible tel quel (AC1032), a été décodé avec libredwg-web en Node pour relever le style des numéros (`ABAK_ANNO_RESA`, Tahoma oblique 20°, hauteur 6) et des bouts de coupe (triangle plein 10 × 3 sur `A-HACHURES`, lettre Arial gras italique) ; l'export embarque désormais une table `STYLE`, validée avec `ezdxf`. Un retour « trop petit » venait d'un DXF exporté par un ancien code (hauteur 4,4) : Baptiste teste avec CadCraft chez lui, AutoCAD au bureau. Question annexe expliquée : DXF plutôt que DWG ([BDR-006](decisions/BDR-006.md)). Lint et build verts, commit `ab9e2dc` poussé.
+
+**Entrées clés :**
+
+- [BDR-018](decisions/BDR-018.md) — ligne de plans bruts
+- [BDR-019](decisions/BDR-019.md) — annotations calquées sur le DWG d'exemple
+- [BLK-012](blockers/BLK-012.md) — DXF testé issu d'un ancien code
