@@ -25,6 +25,7 @@ project adheres to [Semantic Versioning](https://semver.org/).
 - Lignes de coupe A, B, C… sur le plan, à 20 cm de chaque mur extérieur, avec flèches de regard vers le jour.
 - Coupes dans l'export DXF, alignées sous les vues en plan : profil fini, béton brut et paillasse, avec 100 cm de plancher au départ et de palier à l'arrivée ; lignes de coupe et traits de fin de coupe sur le calque axe, y compris sur les vues en plan.
 - Saisie de l'épaisseur du plancher bas, représenté dans les coupes exportées.
+- Vues en plan brutes dans l'export DXF, entre les plans et les coupes : sans contremarches finies, ligne de foulée ni numéros, contremarches intermédiaires sur le calque fin.
 
 ### Changed
 
@@ -32,8 +33,10 @@ project adheres to [Semantic Versioning](https://semver.org/).
 - Résultats réorganisés : synthèse et contrôles en tête, puis plan, tableau des valeurs, herse, coupe développée, détail et lexique. Toutes ces sections se replient ; seul le plan est ouvert au départ, avec l'export DXF accessible même replié.
 - Nouvelle identité visuelle « Cordeau » : fond béton clair, bleu cordeau, police Archivo, logo en haut à gauche et trait de craie sous l'en-tête ; nouvelle icône d'application et nouvelle image d'aperçu pour le partage de lien.
 - Saisie regroupée dans un panneau repliable « Saisie de l'escalier », avec des titres Configuration, Plan et Coupe ; cartes de cotes opaques et plus compactes, légende du plan centrée sous le schéma.
+- Export DXF : numéros de marche au style du bureau (Tahoma oblique, hauteur 6 cm) collés à la foulée côté jour, et bouts des lignes de coupe en triangle plein avec lettre en gras italique, comme dans les plans du bureau.
 
 ### Fixed
 
 - Les panneaux de résultats ne se referment plus quand une saisie passe par une valeur invalide (champ vidé ou en cours de frappe).
 - Sur le schéma de coupe, le repère « Finition marche » pointe de nouveau sur la finition de la marche et non dans le béton.
+- Export DXF : les limons vont jusqu'à la dernière contremarche brute pour fermer l'escalier en plan, et les lignes de coupe tombent sur le calque `ABAK_A-AXES` du gabarit (nom corrigé).
