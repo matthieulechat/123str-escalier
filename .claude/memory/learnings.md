@@ -29,3 +29,5 @@ register: learnings
 | [LRN-021](learnings/LRN-021.md) | 2026-10-17 | Valider un DXF hors AutoCAD : `ezdxf recover` | #dxf #ezdxf #python #validation #autocad #verification |
 | [LRN-022](learnings/LRN-022.md) | 2026-10-17 | Retour « rendu faux » : vérifier d'abord la version du fichier | #pwa #cache #debug #export #verification #stale-build |
 | [LRN-023](learnings/LRN-023.md) | 2026-10-17 | Overlay HTML vertical : coller un bord au point d'ancrage | #css #transform #rotate #overlay #positioning #svg |
+| [LRN-024](learnings/LRN-024.md) | 2026-10-18 | Cotes R12 minuscules dans un gabarit annotatif : DSTYLE | #dxf #dimension #annotatif #dimscale #xdata #gabarit #autocad |
+| [LRN-025](learnings/LRN-025.md) | 2026-10-18 | Cotes automatiques : angles visibles + côté tourné dehors | #dxf #cotation #geometrie #lancer-de-rayon #contour #plan |

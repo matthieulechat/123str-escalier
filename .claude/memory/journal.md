@@ -119,3 +119,14 @@ Ajout d'un import/export des paramètres de saisie. Les boutons « Importer » e
 **Entrées clés :**
 
 - [BDR-021](decisions/BDR-021.md) — Fichier de paramètres = StairInput brut en JSON
+## 2026-10-18
+
+Session cotation de l'export DXF, vue en plan. Le style des cotes a été relevé dans `EXEMPLE ESCALIER.dwg` avec libredwg-web (`ABAK_BA`, annotatif 1:20 : oblique 2,6, lignes d'attache fixes de 13, Tahoma 5, rangées de 16). Les cotes globales ont d'abord été livrées en lignes et texte, puis passées en vraies entités `DIMENSION` R12 avec blocs `*Dn` et table `DIMSTYLE`. Les points cotés sont choisis automatiquement (angles visibles depuis l'extérieur) : chaîne type 90 / 10 / 90, puis le total.
+
+Gros malentendu sur fini et brut : plusieurs allers-retours avant d'établir que la saisie est au fini mais que l'export doit être coté au béton (trait plein à trait plein) pour le maçon ; le DWG d'exemple l'a confirmé. Corrections du tracé au passage : le bout de limon au départ passe sur le calque de finition et disparaît du plan brut, et les traits de longueur nulle aux angles d'un jour droit sont supprimés. Sur le gabarit, les cotes étaient minuscules (style annotatif du gabarit à l'échelle 1) : une surcharge DIMSCALE 20 par cote règle le problème, validée par Baptiste. Titre de saisie renommé « Plan — dimensions FINIES ». Commit 70da3b1 poussé. Prochaine étape : les cotes obliques de giron intérieur et extérieur.
+
+**Entrées clés :**
+
+- [BDR-022](decisions/BDR-022.md) — saisie au fini, export coté au brut
+- [BDR-023](decisions/BDR-023.md) — vraies DIMENSION au style ABAK_BA
+- [BLK-014](blockers/BLK-014.md) — malentendu fini / brut
