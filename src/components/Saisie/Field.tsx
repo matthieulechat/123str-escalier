@@ -10,17 +10,19 @@ interface FieldProps extends SaisieProps {
   x: number // position en % de la largeur du schéma
   y: number // position en % de la hauteur du schéma
   step?: number
+  vertical?: 'left' | 'right' // tourné à la verticale, posé de ce côté du point (bord collé à la cote)
 }
 
 // Champ de saisie posé directement sur le schéma.
-const Field = ({ k, label, x, y, step = 1, value, onChange }: FieldProps) => {
+const Field = ({ k, label, x, y, step = 1, vertical, value, onChange }: FieldProps) => {
   const locked = useLocks().isLocked(k)
   return (
     <div
-      className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center rounded bg-background px-1 shadow-sm ring-1 ring-violet-200"
-      style={{ left: `${x}%`, top: `${y}%` }}
+      className="absolute flex flex-col items-center rounded bg-blue-50 px-1 shadow-sm ring-1 ring-blue-200"
+      // Vertical : après la rotation, un décalage de ±50 % de sa hauteur le pousse à gauche / à droite du point, sans recouvrir le dessin.
+      style={{ left: `${x}%`, top: `${y}%`, transform: `translate(-50%, -50%)${vertical ? ` rotate(-90deg) translateY(${vertical === 'left' ? -50 : 50}%)` : ''}` }}
     >
-      <Label htmlFor={k} className="text-[11px] leading-tight text-violet-700">
+      <Label htmlFor={k} className="text-[11px] leading-tight whitespace-nowrap text-blue-800">
         {label}
       </Label>
       <span className="flex items-center gap-0.5 text-[11px] text-muted-foreground">

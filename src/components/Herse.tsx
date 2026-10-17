@@ -1,6 +1,6 @@
 import { CollapsibleCard } from './Section.tsx'
 import type { HerseData, StairResult } from '../stair.ts'
-import { fmt } from './svg.ts'
+import { num } from './svg.ts'
 
 const INK = '#7c3aed'
 
@@ -36,13 +36,13 @@ const Diagram = ({ d }: { d: HerseData }) => {
               <circle cx={p.x} cy={0} r={fs / 5} fill="#dc2626" />
               {!nearC && (
                 <text x={p.x} y={fs * 1.2} fontSize={fs * 0.7} textAnchor="middle" fill="#dc2626">
-                  {fmt(p.x)}
+                  {num(p.x)}
                 </text>
               )}
               <circle cx={I.x} cy={I.y} r={fs / 4} fill="#0284c7" />
               {roomy && p.collet < c - fs && (
                 <text x={I.x + fs * 0.5} y={I.y + fs * 0.9} fontSize={fs * 0.7} fill="#0284c7">
-                  {fmt(p.collet)}
+                  {num(p.collet)}
                 </text>
               )}
             </g>
@@ -61,14 +61,14 @@ const Diagram = ({ d }: { d: HerseData }) => {
           </text>
         ))}
         <text x={-fs * 1.4} y={-c / 2} fontSize={fs * 0.7} fill="#0f172a" textAnchor="middle" transform={`rotate(-90 ${-fs * 1.4} ${-c / 2})`}>
-          AB = collet à balancer {fmt(c)}
+          AB = collet à balancer {num(c)}
         </text>
         <text x={a / 2} y={fs * 2.3} fontSize={fs * 0.7} fill="#dc2626" textAnchor="middle">
-          AC = foulée à balancer {fmt(a)} (girons reportés en rouge)
+          AC = foulée à balancer {num(a)} (girons reportés en rouge)
         </text>
       </svg>
       <p className="text-xs text-muted-foreground tabular-nums">
-        Collets cumulés : {points.map((p) => `CM ${p.j + 1} → ${fmt(p.collet)}`).join(' · ')}
+        Collets cumulés : {points.map((p) => `CM ${p.j + 1} → ${num(p.collet)}`).join(' · ')}
       </p>
     </figure>
   )

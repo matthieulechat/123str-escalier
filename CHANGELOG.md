@@ -19,13 +19,13 @@ project adheres to [Semantic Versioning](https://semver.org/).
 - Tableau des valeurs par contremarche (girons, collets, cumuls de traçage) et lexique du vocabulaire, en panneaux repliables.
 - Impression de la page.
 - Application installable (PWA) avec icônes, logo et image d'aperçu pour le partage de lien.
-- Export DXF du plan pour AutoCAD : tracés sur les calques du bureau (limons, contremarches brutes et finies), ligne de foulée avec double ligne de départ et flèche d'arrivée, numéros de marche côté jour, dans les 4 orientations pour se caler sur le plan archi.
+- Export DXF du plan pour AutoCAD : tracés sur les calques du bureau (limons, contremarches brutes et finies), ligne de foulée avec double ligne de départ et flèche d'arrivée, numéros de marche côté jour, dans l'orientation choisie pour se caler sur le plan archi.
 - Vue 3D orientable de l'escalier (rotation, zoom, déplacement) : marches et paillasse en béton brut, finitions de marche et de contremarche, marches balancées en bleu, avec des cases à cocher pour masquer les finitions ou la couleur des balancées. Chargée seulement à l'ouverture de son panneau.
 - Cadenas à côté de chaque valeur de saisie pour la verrouiller et éviter les fautes de frappe.
 - Lignes de coupe A, B, C… sur le plan, à 20 cm de chaque mur extérieur, avec flèches de regard vers le jour.
-- Coupes dans l'export DXF, alignées sous les vues en plan : profil fini, béton brut et paillasse, avec 100 cm de plancher au départ et de palier à l'arrivée ; lignes de coupe et traits de fin de coupe sur le calque axe, y compris sur les vues en plan.
+- Coupes dans l'export DXF, sous les vues en plan : profil fini, béton brut et paillasse, avec 100 cm de plancher au départ et de palier à l'arrivée ; lignes de coupe et traits de fin de coupe sur le calque axe, y compris sur les vues en plan.
 - Saisie de l'épaisseur du plancher bas, représenté dans les coupes exportées.
-- Vues en plan brutes dans l'export DXF, entre les plans et les coupes : sans contremarches finies, ligne de foulée ni numéros, contremarches intermédiaires sur le calque fin.
+- Vue en plan brute dans l'export DXF, à droite du plan fini : sans contremarches finies, ligne de foulée ni numéros, contremarches intermédiaires sur le calque fin.
 
 ### Changed
 
@@ -34,6 +34,11 @@ project adheres to [Semantic Versioning](https://semver.org/).
 - Nouvelle identité visuelle « Cordeau » : fond béton clair, bleu cordeau, police Archivo, logo en haut à gauche et trait de craie sous l'en-tête ; nouvelle icône d'application et nouvelle image d'aperçu pour le partage de lien.
 - Saisie regroupée dans un panneau repliable « Saisie de l'escalier », avec des titres Configuration, Plan et Coupe ; cartes de cotes opaques et plus compactes, légende du plan centrée sous le schéma.
 - Export DXF : numéros de marche au style du bureau (Tahoma oblique, hauteur 6 cm) collés à la foulée côté jour, et bouts des lignes de coupe en triangle plein avec lettre en gras italique, comme dans les plans du bureau.
+- Configuration en boutons visuels : type d'escalier (droit, 1/4, 1/2 tournant) avec pictogramme, bouton « Inverser » pour le sens, bouton jour droit / arrondi dont le dessin suit le choix.
+- Orientation du plan choisie par 4 boutons pictogrammes (flèche = sens de montée) : les schémas de saisie, le plan annoté et l'export DXF tournent ensemble.
+- Cotes verticales des schémas de saisie écrites à la verticale, collées à leur cote, et emmarchement dessiné plus large ; schémas centrés et à la même échelle dans toutes les orientations.
+- Étiquettes du plan annoté placées au plus près de leur cible, sans recouvrir le dessin, dans des cartes bleues assorties aux champs de saisie (cartes bleues aussi en saisie).
+- Sur les schémas, plus de décimale inutile (220 au lieu de 220,0).
 
 ### Fixed
 

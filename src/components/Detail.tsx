@@ -1,7 +1,7 @@
 import { CollapsibleCard } from './Section.tsx'
 import type { StairResult } from '../stair.ts'
 import { Dim, Labels } from './Annot.tsx'
-import { boxOf, fmt, lvl, viewBox, type Label } from './svg.ts'
+import { boxOf, num, numLvl, viewBox, type Label } from './svg.ts'
 
 // Zoom sur le départ : explique finitions, niveaux fini/brut et 1re contremarche brute.
 const Detail = ({ r }: { r: StairResult }) => {
@@ -40,11 +40,11 @@ const Detail = ({ r }: { r: StairResult }) => {
   const fs = (xRight - xLeft) / 30
   const labels: Label[] = [
     { at: P(xs(2), 2 * h), text: 'Nez de marche', side: 'left' },
-    { at: P((xs(2) + xs(3)) / 2, 2 * h - eM / 2), text: `Finition marche ${fmt(eM)}`, color: '#b45309', side: 'right' },
-    { at: P(xs(2) + eCm / 2, 1.5 * h), text: `Finition contremarche ${fmt(eCm)}`, color: '#b45309', side: 'left' },
-    { at: P(xLeft + 12, -eBas / 2), text: `Finition sol ${fmt(eBas)}`, color: '#b45309', side: 'left' },
-    { at: P(xLeft + 4, 0), text: `NF ${lvl(input.nfBas)} (niveau fini)`, color: '#0f172a', side: 'left' },
-    { at: P(xLeft + 20, -eBas), text: `NB ${lvl(r.nbBas)} (niveau brut)`, color: '#ea580c', side: 'left' },
+    { at: P((xs(2) + xs(3)) / 2, 2 * h - eM / 2), text: `Finition marche ${num(eM)}`, color: '#b45309', side: 'right' },
+    { at: P(xs(2) + eCm / 2, 1.5 * h), text: `Finition contremarche ${num(eCm)}`, color: '#b45309', side: 'left' },
+    { at: P(xLeft + 12, -eBas / 2), text: `Finition sol ${num(eBas)}`, color: '#b45309', side: 'left' },
+    { at: P(xLeft + 4, 0), text: `NF ${numLvl(input.nfBas)} (niveau fini)`, color: '#0f172a', side: 'left' },
+    { at: P(xLeft + 20, -eBas), text: `NB ${numLvl(r.nbBas)} (niveau brut)`, color: '#ea580c', side: 'left' },
     { at: P(xs(3) + eCm, 2.5 * h - eM), text: 'Contremarche brute', color: '#ea580c', side: 'right' },
     { at: P(xs(1) + g / 2, h - eM - 5), text: 'Béton brut', color: '#475569', side: 'right' },
   ]
@@ -72,10 +72,10 @@ const Detail = ({ r }: { r: StairResult }) => {
         <path d={fini.join(' ')} fill="none" stroke="#0f172a" strokeWidth={fs / 12} strokeDasharray={`${fs / 3} ${fs / 4}`} />
         <path d={`M${underPt.x - 40},${-under(underPt.x - 40)} L${xRight},${-under(xRight)}`} stroke="#475569" strokeWidth={fs / 10} />
 
-        <Dim a={P(xs(2), 2 * h)} b={P(xs(3), 2 * h)} text={`Giron g ${fmt(g)}`} fs={fs} offset={fs * 1.3} />
-        <Dim a={P(xs(3), 2 * h)} b={P(xs(3), 3 * h)} text={`h ${fmt(h)}`} fs={fs} offset={fs * 1.3} />
-        <Dim a={P(xs(1) + eCm, -eBas)} b={P(xs(1) + eCm, h - eM)} text={`1re CM brute ${fmt(h - eM + eBas)}`} fs={fs} offset={fs * 1.2} />
-        <Dim a={P(corner.x, corner.z)} b={P(underPt.x, underPt.z)} text={`Paillasse ${fmt(paillasse)}`} fs={fs} offset={0} color="#475569" />
+        <Dim a={P(xs(2), 2 * h)} b={P(xs(3), 2 * h)} text={`Giron g ${num(g)}`} fs={fs} offset={fs * 1.3} />
+        <Dim a={P(xs(3), 2 * h)} b={P(xs(3), 3 * h)} text={`h ${num(h)}`} fs={fs} offset={fs * 1.3} />
+        <Dim a={P(xs(1) + eCm, -eBas)} b={P(xs(1) + eCm, h - eM)} text={`1re CM brute ${num(h - eM + eBas)}`} fs={fs} offset={fs * 1.2} />
+        <Dim a={P(corner.x, corner.z)} b={P(underPt.x, underPt.z)} text={`Paillasse ${num(paillasse)}`} fs={fs} offset={0} color="#475569" />
 
         <Labels items={labels} box={box} fs={fs} />
       </svg>

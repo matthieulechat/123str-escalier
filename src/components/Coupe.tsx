@@ -1,7 +1,7 @@
 import { CollapsibleCard } from './Section.tsx'
 import type { StairResult } from '../stair.ts'
 import { Dim, Labels } from './Annot.tsx'
-import { boxOf, fmt, lvl, viewBox, type Label } from './svg.ts'
+import { boxOf, num, numLvl, viewBox, type Label } from './svg.ts'
 
 // Coupe développée sur la ligne de foulée : profil fini, profil brut et béton (paillasse + dalle haute).
 const Coupe = ({ r }: { r: StairResult }) => {
@@ -51,12 +51,12 @@ const Coupe = ({ r }: { r: StairResult }) => {
   const k = Math.max(2, Math.floor(n / 2))
   const xMid = (xBot + xTop) / 2
   const labels: Label[] = [
-    { at: P(xStart + 10, 0), text: `NF départ ${lvl(input.nfBas)}`, color: '#0f172a' },
-    { at: P(xStart + 25, -eBas), text: `NB départ ${lvl(r.nbBas)}`, color: '#ea580c' },
-    { at: P(xEnd - 10, H), text: `NF arrivée ${lvl(input.nfHaut)}`, color: '#0f172a' },
-    { at: P(xEnd - 15, zBrutTop), text: `NB arrivée ${lvl(r.nbHaut)}`, color: '#ea580c' },
-    { at: P(xEnd - 30, zBrutTop - dalleHaut / 2), text: `Dalle palier ${fmt(dalleHaut)}`, color: '#475569' },
-    { at: P(xMid, under(xMid) + paillasse / 2), text: `Paillasse ${fmt(paillasse)} (perpendiculaire)`, color: '#475569', side: 'right' },
+    { at: P(xStart + 10, 0), text: `NF départ ${numLvl(input.nfBas)}`, color: '#0f172a' },
+    { at: P(xStart + 25, -eBas), text: `NB départ ${numLvl(r.nbBas)}`, color: '#ea580c' },
+    { at: P(xEnd - 10, H), text: `NF arrivée ${numLvl(input.nfHaut)}`, color: '#0f172a' },
+    { at: P(xEnd - 15, zBrutTop), text: `NB arrivée ${numLvl(r.nbHaut)}`, color: '#ea580c' },
+    { at: P(xEnd - 30, zBrutTop - dalleHaut / 2), text: `Dalle palier ${num(dalleHaut)}`, color: '#475569' },
+    { at: P(xMid, under(xMid) + paillasse / 2), text: `Paillasse ${num(paillasse)} (perpendiculaire)`, color: '#475569', side: 'right' },
     { at: P((k + 1) * g + eCm, (k + 1) * h - eM), text: 'Profil brut (béton)', color: '#ea580c', side: 'right' },
     { at: P((k - 2) * g, (k - 1.5) * h), text: 'Profil fini', color: '#0f172a', side: 'left' },
   ]
@@ -75,8 +75,8 @@ const Coupe = ({ r }: { r: StairResult }) => {
           strokeWidth={fs / 8}
         />
 
-        <Dim a={P(xEnd, 0)} b={P(xEnd, H)} text={`Hauteur à monter ${fmt(H)}`} fs={fs} offset={-fs * 2} />
-        <Dim a={P(0, 0)} b={P(sLast, 0)} text={`Foulée développée ${fmt(r.lf)} = ${n - 1} × ${fmt(g)}`} fs={fs} offset={-fs * 3.5} />
+        <Dim a={P(xEnd, 0)} b={P(xEnd, H)} text={`Hauteur à monter ${num(H)}`} fs={fs} offset={-fs * 2} />
+        <Dim a={P(0, 0)} b={P(sLast, 0)} text={`Foulée développée ${num(r.lf)} = ${n - 1} × ${num(g)}`} fs={fs} offset={-fs * 3.5} />
 
         <Labels items={labels} box={box} fs={fs} />
       </svg>

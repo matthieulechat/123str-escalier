@@ -54,7 +54,7 @@ const App = () => {
         </Button>
       </header>
       <main className="mx-auto flex max-w-6xl flex-col gap-6 p-6">
-        <Saisie value={input} onChange={setInput} />
+        <Saisie value={input} onChange={setInput} result={lastOk} />
         {"error" in result && (
           <Alert variant="destructive" aria-live="polite">
             <AlertDescription>{result.error}</AlertDescription>

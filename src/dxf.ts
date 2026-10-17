@@ -1,5 +1,6 @@
 // Export DXF (R12 ASCII) des tracés du plan. Ouvrable dans AutoCAD, puis Enregistrer sous… DWG.
 import { cutLines, cutProfile, type Pt, type StairResult } from './stair.ts'
+import { hitsBox } from './components/svg.ts'
 
 // Calques du gabarit du bureau (noms exacts pour fusionner avec ceux du DWG cible).
 const VU = 'ABAK_BC-COFFRAGE-VU'
@@ -17,20 +18,6 @@ const NUM_H = 6
 const HACH = 'ABAK_A-HACHURES'
 const CUT_STYLE = 'ABAK_COUPE'
 const CUT_H = 6
-
-// Le segment [a, b] coupe-t-il le rectangle [x0, x1] × [y0, y1] ? (découpage de Liang-Barsky)
-const hitsBox = (a: Pt, b: Pt, x0: number, x1: number, y0: number, y1: number): boolean => {
-  const [dx, dy] = [b.x - a.x, b.y - a.y]
-  let [t0, t1] = [0, 1]
-  for (const [p, q] of [[-dx, a.x - x0], [dx, x1 - a.x], [-dy, a.y - y0], [dy, y1 - a.y]]) {
-    if (p === 0) {
-      if (q < 0) return false
-    } else if (p < 0) t0 = Math.max(t0, q / p)
-    else t1 = Math.min(t1, q / p)
-    if (t0 > t1) return false
-  }
-  return true
-}
 
 // Une vue tournée de `rotation` degrés (sens trigo) autour du centre de l'escalier, puis décalée de (dx, dy).
 // Les textes restent horizontaux. `brut` : sans la couche de finition (contremarches finies).
@@ -181,16 +168,16 @@ const sections = (r: StairResult, x0: number, yTop: number, gap: number, h: numb
   return ents
 }
 
-// Les 4 orientations côte à côte : le dessinateur garde celle qui colle au plan archi.
-// Dessous, les mêmes vues en brut, puis les coupes.
+// La vue tournée selon l'orientation choisie en configuration, à droite la même en brut, dessous les coupes.
 export const planDxf = (r: StairResult): string => {
+  const rotation = r.input.orientation ?? 0
   const pts = [...r.outerLine, ...r.innerLine]
   const diag = Math.hypot(
     Math.max(...pts.map((p) => p.x)) - Math.min(...pts.map((p) => p.x)),
     Math.max(...pts.map((p) => p.y)) - Math.min(...pts.map((p) => p.y)),
   )
-  const ents = [0, 90, 180, 270].flatMap((a, i) => [...view(r, a, i * diag * 1.3), ...view(r, a, i * diag * 1.3, -diag * 1.3, true)])
-  ents.push(...sections(r, -diag / 2, -diag * 2.05, diag * 0.3, diag / 50))
+  const ents = [...view(r, rotation, 0), ...view(r, rotation, diag * 1.3, 0, true)]
+  ents.push(...sections(r, -diag / 2, -diag * 0.75, diag * 0.3, diag / 50))
   // Seule table : les styles de texte (numéros, lettres de coupe). Les calques restent ceux du gabarit à l'insertion (BDR-006).
   const def = (name: string, h: number, oblique: number, font: string) =>
     ['0', 'STYLE', '2', name, '70', '0', '40', '0', '41', '1', '50', `${oblique}`, '71', '0', '42', `${h}`, '3', font, '4', '']

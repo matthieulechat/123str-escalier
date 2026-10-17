@@ -4,12 +4,12 @@ import { downloadDxf } from '../dxf.ts'
 import { CollapsibleCard } from './Section.tsx'
 import { CUT, cutLines, type Pt, type StairResult } from '../stair.ts'
 import { Dim, Labels } from './Annot.tsx'
-import { boxOf, fmt, viewBox, type Label } from './svg.ts'
+import { boxOf, dimSegs, num, rotate, viewBox, type Label } from './svg.ts'
 
 // Aperçu en plan : contremarches brutes en trait plein, finies en pointillé.
 const Plan = ({ r }: { r: StairResult }) => {
   const flip = r.input.sens === 'gauche' ? -1 : 1
-  const map = (p: Pt): Pt => ({ x: p.x, y: flip * p.y })
+  const map = (p: Pt): Pt => rotate({ x: p.x, y: flip * p.y }, r.input.orientation ?? 0)
   const path = (pts: Pt[]) => pts.map((p, i) => `${i ? 'L' : 'M'}${map(p).x},${map(p).y}`).join(' ')
 
   const box = boxOf([...r.outerLine, ...r.innerLine, ...r.risers.map((x) => x.outer)].map(map))
@@ -35,7 +35,7 @@ const Plan = ({ r }: { r: StairResult }) => {
   const labels: Label[] = [
     { at: map(risers[0].foulee), text: 'Départ (1re contremarche)' },
     { at: map(end), text: `Arrivée (${n}e CM = nez de palier)` },
-    { at: lerp(risers[0].foulee, risers[1].foulee, 0.5), text: `Ligne de foulée (à ${fmt(r.f)} du jour)`, color: '#dc2626', side: 'left' },
+    { at: lerp(risers[0].foulee, risers[1].foulee, 0.5), text: `Ligne de foulée (à ${num(r.f)} du jour)`, color: '#dc2626', side: 'left' },
     { at: map(mid(r.outerLine[0], r.outerLine[1])), text: 'Mur / limon extérieur' },
     // Cibles près du mur extérieur : lignes de rappel courtes, hors de la zone des cotes.
     { at: lerp(risers[1].brutInner, risers[1].brutOuter, 0.85), text: 'Contremarche brute (trait plein)', side: 'left' },
@@ -50,12 +50,34 @@ const Plan = ({ r }: { r: StairResult }) => {
     }
   }
 
+  const dims = [
+    { a: map(risers[0].inner), b: map(risers[0].outer), text: `Emmarchement ${num(r.input.largeur)}`, offset: -fs * 2 * flip },
+    { a: map(o[0]), b: map(o[1]), text: `${r.theta > 0 ? 'Volée départ' : 'Longueur'} ${num(r.input.volee1)}`, offset: -flip * fs * 2.5 },
+    ...(r.theta > 0 ? [{ a: map(o[o.length - 1]), b: map(o[o.length - 2]), text: `Volée arrivée ${num(r.input.volee2)}`, offset: flip * fs * 2.5 }] : []),
+    { a: map(risers[1].foulee), b: map(r2.foulee), text: `g ${num(r.g)}`, offset: fs * 1.2 },
+  ]
+  // Tout ce qui est tracé : les cartes d'étiquettes se posent à côté, jamais dessus.
+  const segs = (pts: Pt[]): [Pt, Pt][] => pts.slice(1).map((p, i) => [map(pts[i]), map(p)])
+  const near = (p: Pt): [Pt, Pt][] => [[{ x: p.x - fs / 2, y: p.y - fs / 2 }, { x: p.x + fs / 2, y: p.y + fs / 2 }]]
+  const obstacles: [Pt, Pt][] = [
+    ...segs(r.outerLine),
+    ...segs(r.innerLine),
+    ...segs(r.fouleeLine),
+    ...(r.separation ? segs(r.separation) : []),
+    ...risers.flatMap((x) => [...segs([x.inner, x.outer]), ...segs([x.brutInner, x.brutOuter])]),
+    ...cuts.flatMap((c): [Pt, Pt][] => [[c.p, c.q], [c.p, c.pa], [c.q, c.qa], ...near(c.pl), ...near(c.ql)]),
+    ...dims.flatMap((d) => dimSegs(d.a, d.b, d.offset, fs)),
+  ]
+  // Emprise : en demi-tournant, le contour extérieur fermé englobe aussi le jour (sinon c'est une encoche hors polygone).
+  const forbid = (r.input.type === 'demi' ? r.outerLine : [...r.outerLine, ...[...r.innerLine].reverse()]).map(map)
+  const area = { minX: box.minX - fs * 18, maxX: box.maxX + fs * 18, minY: box.minY - fs * 5, maxY: box.maxY + fs * 5 }
+
   return (
     <CollapsibleCard
       defaultOpen
       title="Plan"
       action={
-        <Button variant="outline" size="sm" onClick={() => downloadDxf(r)} title="Tracés seuls, dans les 4 orientations. Ouvrir dans AutoCAD puis Enregistrer sous DWG.">
+        <Button variant="outline" size="sm" onClick={() => downloadDxf(r)} title="Tracés seuls, dans l'orientation choisie en configuration. Ouvrir dans AutoCAD puis Enregistrer sous DWG.">
           <DownloadIcon aria-hidden="true" />
           Export DXF
         </Button>
@@ -63,7 +85,7 @@ const Plan = ({ r }: { r: StairResult }) => {
       legend={
         <p className="flex flex-wrap gap-x-4 gap-y-1">
           <span>━ brut (béton)</span>
-          <span>┄ fini (après finition de {fmt(r.input.finContremarche)} cm en contremarche)</span>
+          <span>┄ fini (après finition de {num(r.input.finContremarche)} cm en contremarche)</span>
           <span className="text-sky-700">bleu : marches balancées</span>
           <span className="text-red-600">rouge : ligne de foulée</span>
           <span className="text-emerald-600">vert : lignes de coupe à {CUT} cm du mur</span>
@@ -116,11 +138,10 @@ const Plan = ({ r }: { r: StairResult }) => {
           )
         })}
 
-        <Dim a={map(risers[0].inner)} b={map(risers[0].outer)} text={`Emmarchement ${fmt(r.input.largeur)}`} fs={fs} offset={-fs * 2 * flip} />
-        <Dim a={map(o[0])} b={map(o[1])} text={`${r.theta > 0 ? 'Volée départ' : 'Longueur'} ${fmt(r.input.volee1)}`} fs={fs} offset={-flip * fs * 2.5} />
-        {r.theta > 0 && <Dim a={map(o[o.length - 1])} b={map(o[o.length - 2])} text={`Volée arrivée ${fmt(r.input.volee2)}`} fs={fs} offset={flip * fs * 2.5} />}
-        <Dim a={map(risers[1].foulee)} b={map(r2.foulee)} text={`g ${fmt(r.g)}`} fs={fs} offset={fs * 1.2} />
-        <Labels items={labels} box={box} fs={fs} gapX={5} />
+        {dims.map((d) => (
+          <Dim key={d.text} a={d.a} b={d.b} text={d.text} fs={fs} offset={d.offset} />
+        ))}
+        <Labels items={labels} box={box} fs={fs} gapX={5} obstacles={obstacles} area={area} forbid={forbid} />
       </svg>
     </CollapsibleCard>
   )

@@ -7,6 +7,7 @@ export type Level = 'ok' | 'bad'
 export interface StairInput {
   type: StairType
   sens: Sens
+  orientation?: number // degrés sens trigo : rotation du plan dans l'export DXF (0, 90, 180, 270)
   largeur: number // emmarchement
   jour: number // quart : rayon du jour arrondi ; demi : largeur du jour
   jourArrondi: boolean // false = jour droit (angles vifs)
