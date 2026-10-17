@@ -26,3 +26,4 @@ register: decisions
 | [BDR-018](decisions/BDR-018.md) | 2026-10-17 | Export DXF : plan brut à droite du plan fini | #dxf #plan #brut #export #calques #limon | actif |
 | [BDR-019](decisions/BDR-019.md) | 2026-10-17 | Annotations DXF calquées sur EXEMPLE ESCALIER.dwg | #dxf #annotation #texte #coupe #abak #autocad | actif |
 | [BDR-020](decisions/BDR-020.md) | 2026-10-17 | Orientation choisie en config, plans et DXF tournés ensemble | #orientation #rotation #dxf #plan #saisie #ux | actif |
+| [BDR-021](decisions/BDR-021.md) | 2026-10-17 | Fichier de paramètres = StairInput brut en JSON | #import-export #json #stairinput #retrocompat #react | actif |

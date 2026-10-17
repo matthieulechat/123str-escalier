@@ -111,3 +111,11 @@ Grosse session UX sur l'orientation et la saisie. On a d'abord remplacé les 4 o
 
 - [BDR-020](decisions/BDR-020.md) — Orientation choisie en config, plans et DXF tournés ensemble
 - [LRN-023](learnings/LRN-023.md) — Overlay HTML vertical : coller un bord au point d'ancrage
+
+---
+
+Ajout d'un import/export des paramètres de saisie. Les boutons « Importer » et « Exporter » remplacent le bouton Imprimer dans l'en-tête (`src/App.tsx`). L'export télécharge le `StairInput` courant en `escalier.json`. L'import relit le fichier, le fusionne par-dessus `DEFAULTS` pour rester compatible avec les fichiers plus anciens, et affiche une alerte si le JSON est invalide. Le `Button` base-nova (Base UI) n'ayant pas de `asChild`, l'import passe par un `<input type="file" hidden>` déclenché via une ref. Le CHANGELOG remplace l'entrée « Impression de la page » par l'import/export. Lint et build OK, commit `24ef213` poussé. Pas testé dans le navigateur.
+
+**Entrées clés :**
+
+- [BDR-021](decisions/BDR-021.md) — Fichier de paramètres = StairInput brut en JSON
