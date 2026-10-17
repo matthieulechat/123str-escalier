@@ -22,6 +22,9 @@ project adheres to [Semantic Versioning](https://semver.org/).
 - Export DXF du plan pour AutoCAD : tracés sur les calques du bureau (limons, contremarches brutes et finies), ligne de foulée avec double ligne de départ et flèche d'arrivée, numéros de marche côté jour, dans les 4 orientations pour se caler sur le plan archi.
 - Vue 3D orientable de l'escalier (rotation, zoom, déplacement) : marches et paillasse en béton brut, finitions de marche et de contremarche, marches balancées en bleu, avec des cases à cocher pour masquer les finitions ou la couleur des balancées. Chargée seulement à l'ouverture de son panneau.
 - Cadenas à côté de chaque valeur de saisie pour la verrouiller et éviter les fautes de frappe.
+- Lignes de coupe A, B, C… sur le plan, à 20 cm de chaque mur extérieur, avec flèches de regard vers le jour.
+- Coupes dans l'export DXF, alignées sous les vues en plan : profil fini, béton brut et paillasse, avec 100 cm de plancher au départ et de palier à l'arrivée ; lignes de coupe et traits de fin de coupe sur le calque axe, y compris sur les vues en plan.
+- Saisie de l'épaisseur du plancher bas, représenté dans les coupes exportées.
 
 ### Changed
 

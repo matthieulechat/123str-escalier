@@ -1,5 +1,5 @@
 // Export DXF (R12 ASCII) des tracés du plan. Ouvrable dans AutoCAD, puis Enregistrer sous… DWG.
-import type { Pt, StairResult } from './stair.ts'
+import { cutLines, cutProfile, type Pt, type StairResult } from './stair.ts'
 
 // Calques du gabarit du bureau (noms exacts pour fusionner avec ceux du DWG cible).
 const VU = 'ABAK_BC-COFFRAGE-VU'
@@ -7,6 +7,8 @@ const FIN = 'ABAK_BC-COFFRAGE-FIN'
 const CACHE = 'ABAK_BC-COFFRAGE-CA'
 const COTA = 'ABAK_A-COTA'
 const NUM = 'ABAK_A-ANNOT'
+const COUPE = VU // béton coupé (brut et sous-face des coupes)
+const AXE = 'ABAK_A-AXE' // lignes de coupe et traits de fin de coupe
 const BLACK = 7 // blanc/noir AutoCAD
 
 // Le segment [a, b] coupe-t-il le rectangle [x0, x1] × [y0, y1] ? (découpage de Liang-Barsky)
@@ -76,6 +78,22 @@ const view = (r: StairResult, rotation: number, dx: number): string[] => {
   const d1 = unit(f[f.length - 2], end)
   for (const side of [-0.45 * h, 0.45 * h]) seg(COTA, end, at(end, d1, -1.5 * h, side))
 
+  // Lignes de coupe (calque axe) : flèche ouverte vers le jour à chaque bout, lettre au-delà de la flèche.
+  for (const c of cutLines(r)) {
+    const pt = (t: number, k = 0): Pt => scr({ x: c.a.x + c.n.x * k + c.d.x * t, y: c.a.y + c.n.y * k + c.d.y * t })
+    const ext = 2 * size
+    const ends = [-ext, c.len + ext]
+    seg(AXE, pt(ends[0]), pt(ends[1]))
+    for (const t of ends) {
+      const tip = pt(t, 1.5 * size)
+      seg(AXE, pt(t), tip)
+      for (const side of [-0.4 * size, 0.4 * size]) seg(AXE, tip, pt(t + side, 1.5 * size - 0.6 * size))
+      const l = out(pt(t, 2.6 * size))
+      ents.push('0', 'TEXT', '8', NUM, '10', `${l.x}`, '20', `${l.y}`, '30', '0', '40', `${size}`, '1', c.name,
+        '72', '1', '73', '2', '11', `${l.x}`, '21', `${l.y}`, '31', '0')
+    }
+  }
+
   // Numéros 01, 02… en italique, entre la foulée et le jour : au plus près de la contremarche de départ
   // et de la foulée, sans toucher aucun trait. Boîte du texte mesurée sur le rendu AutoCAD (« 05 » ≈ 1,9 h de large).
   const [hw, hh] = [1.2 * h, 0.7 * h] // demi-largeur / demi-hauteur, marge comprise
@@ -98,6 +116,39 @@ const view = (r: StairResult, rotation: number, dx: number): string[] => {
   return ents
 }
 
+const text = (x: number, y: number, h: number, s: string) =>
+  ['0', 'TEXT', '8', NUM, '10', `${x}`, '20', `${y}`, '30', '0', '40', `${h}`, '1', s, '72', '1', '11', `${x}`, '21', `${y}`, '31', '0']
+
+// Coupes A, B… alignées sur une ligne sous les plans, z vers le haut depuis le NF départ.
+// Vue vers le jour : en sens « droite », la montée va de droite à gauche.
+const sections = (r: StairResult, x0: number, yTop: number, gap: number, h: number): string[] => {
+  const ents: string[] = []
+  const mirror = r.input.sens === 'droite'
+  let x = x0
+  for (const c of cutLines(r)) {
+    const { fini, brut, sousFace, ends } = cutProfile(r, c)
+    const x0c = Math.min(...brut.map((p) => p.x))
+    const w = Math.max(...fini.map((p) => p.x), ...brut.map((p) => p.x)) - x0c
+    const top = Math.max(...brut.map((p) => p.y), ...fini.map((p) => p.y))
+    const out = (p: Pt): Pt => ({ x: x + (mirror ? w - (p.x - x0c) : p.x - x0c), y: yTop - top + p.y })
+    const segs = (layer: string, pts: Pt[]) =>
+      pts.slice(1).forEach((p, i) => {
+        const [a, b] = [out(pts[i]), out(p)]
+        if (Math.hypot(b.x - a.x, b.y - a.y) > 1e-6)
+          ents.push('0', 'LINE', '8', layer, '10', `${a.x}`, '20', `${a.y}`, '30', '0', '11', `${b.x}`, '21', `${b.y}`, '31', '0')
+      })
+    segs(CACHE, fini)
+    segs(COUPE, brut)
+    segs(COUPE, sousFace)
+    ends.forEach((e) => segs(AXE, e))
+    const bottom = Math.min(...brut.map((p) => p.y), ...sousFace.map((p) => p.y))
+    const t = out({ x: x0c + w / 2, y: bottom })
+    ents.push(...text(t.x, t.y - 2.5 * h, 1.5 * h, `COUPE ${c.name}-${c.name}`))
+    x += w + gap
+  }
+  return ents
+}
+
 // Les 4 orientations côte à côte : le dessinateur garde celle qui colle au plan archi.
 export const planDxf = (r: StairResult): string => {
   const pts = [...r.outerLine, ...r.innerLine]
@@ -106,6 +157,7 @@ export const planDxf = (r: StairResult): string => {
     Math.max(...pts.map((p) => p.y)) - Math.min(...pts.map((p) => p.y)),
   )
   const ents = [0, 90, 180, 270].flatMap((a, i) => view(r, a, i * diag * 1.3))
+  ents.push(...sections(r, -diag / 2, -diag * 0.75, diag * 0.3, diag / 50))
   return ['0', 'SECTION', '2', 'ENTITIES', ...ents, '0', 'ENDSEC', '0', 'EOF', ''].join('\r\n')
 }
 

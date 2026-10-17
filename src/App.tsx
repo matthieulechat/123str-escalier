@@ -29,6 +29,7 @@ const DEFAULTS: StairInput = {
   finContremarche: 1,
   paillasse: 15,
   dalleHaut: 20,
+  dalleBas: 20,
   nbContremarches: 0,
   nbBalancees: 5,
 };

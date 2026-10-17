@@ -20,6 +20,7 @@ export interface StairInput {
   finContremarche: number // épaisseur de finition sur les contremarches
   paillasse: number // épaisseur de la paillasse béton (perpendiculaire)
   dalleHaut: number // épaisseur de la dalle du palier d'arrivée
+  dalleBas: number // épaisseur du plancher de départ
   nbContremarches: number // 0 = automatique
   nbBalancees: number // marches balancées de chaque côté de la ligne de séparation
 }
@@ -404,3 +405,89 @@ export const computeStair = (input: StairInput): StairResult | { error: string }
   }
 }
 
+
+// Lignes de coupe : une par mur extérieur, à `offset` cm à l'intérieur, regard vers le jour (n).
+export interface CutLine {
+  name: string
+  a: Pt // départ, à l'aplomb du début du mur
+  d: Pt // direction du mur (sens de la montée)
+  n: Pt // normale vers le jour
+  len: number
+}
+
+export const CUT = 20 // distance des lignes de coupe au mur extérieur (cm)
+export const PLANCHER = 100 // longueur de plancher représentée au départ et à l'arrivée des coupes (cm)
+
+export const cutLines = (r: StairResult, offset = CUT): CutLine[] =>
+  r.outerLine.slice(0, -1).map((a, i) => {
+    const b = r.outerLine[i + 1]
+    const len = Math.hypot(b.x - a.x, b.y - a.y) || 1
+    const d = { x: (b.x - a.x) / len, y: (b.y - a.y) / len }
+    const n = { x: -d.y, y: d.x } // le jour est à gauche du mur parcouru
+    return { name: String.fromCharCode(65 + i), a: { x: a.x + n.x * offset, y: a.y + n.y * offset }, d, n, len }
+  })
+
+// Profils de la coupe (t le long de la ligne, z depuis le NF départ) : fini, brut, sous-face de paillasse.
+// Même convention que la coupe développée et la 3D : sous-face constante le long de chaque contremarche brute.
+export const cutProfile = (r: StairResult, c: CutLine): { fini: Pt[]; brut: Pt[]; sousFace: Pt[]; ends: [Pt, Pt][] } => {
+  const { n, h, g, input } = r
+  const { finSolBas: eBas, finSolHaut: eHaut, finMarche: eM } = input
+  const H = n * h
+  // Abscisse de la traversée d'une contremarche [p, q] sur la ligne de coupe (prolongée : la CM brute
+  // d'arrivée d'un escalier droit dépasse le bout du mur de la finition de contremarche).
+  const hit = (p: Pt, q: Pt): number | undefined => {
+    const e = { x: q.x - p.x, y: q.y - p.y }
+    const den = cross(c.d, e)
+    if (Math.abs(den) < EPS) return undefined
+    const w = { x: p.x - c.a.x, y: p.y - c.a.y }
+    const t = cross(w, e) / den
+    const k = cross(w, c.d) / den
+    return k >= -EPS && k <= 1 + EPS ? t : undefined
+  }
+  const fz = (j: number) => (j < 0 ? 0 : j >= n - 1 ? H : (j + 1) * h) // dessus fini après la CM j
+  const bz = (j: number) => (j < 0 ? -eBas : j >= n - 1 ? H - eHaut : (j + 1) * h - eM)
+  const off = input.paillasse * Math.hypot(1, h / g)
+  const sz = (j: number) => Math.min(Math.max(j * h - eM - off, -eBas), H - eHaut - input.dalleHaut)
+
+  // Emprise de la coupe : le mur, plus PLANCHER cm de sol au départ et de palier à l'arrivée s'ils sont coupés.
+  const hits = (side: (x: Riser) => [Pt, Pt]) =>
+    r.risers.flatMap((x) => {
+      const t = hit(...side(x))
+      return t === undefined ? [] : [{ j: x.j, t }]
+    })
+  const all = [...hits((x) => [x.inner, x.outer]), ...hits((x) => [x.brutInner, x.brutOuter])]
+  const tFirst = Math.min(0, ...all.filter((x) => x.j === 0).map((x) => x.t - PLANCHER))
+  const tLast = Math.max(c.len, ...all.map((x) => (x.j === n - 1 ? x.t + PLANCHER : x.t)))
+
+  const steps = (z: (j: number) => number, side: (x: Riser) => [Pt, Pt]): Pt[] => {
+    const xs = hits(side)
+    const j0 = xs.length ? xs[0].j - 1 : -1
+    const pts: Pt[] = [{ x: tFirst, y: z(j0) }]
+    xs.forEach(({ j, t }) => pts.push({ x: t, y: z(j - 1) }, { x: t, y: z(j) }))
+    pts.push({ x: tLast, y: z(xs.length ? xs[xs.length - 1].j : j0) })
+    return pts
+  }
+  const fini = steps(fz, (x) => [x.inner, x.outer])
+  const brut = steps(bz, (x) => [x.brutInner, x.brutOuter])
+  // Sous-face : sous le plancher de départ s'il est coupé, puis la paillasse, puis sous la dalle du palier.
+  // ponytail: prolongée à plat avant/après les contremarches traversées (exact en volée droite).
+  const sf = hits((x) => [x.brutInner, x.brutOuter]).map(({ j, t }) => ({ x: t, y: sz(j) }))
+  if (!sf.length) return { fini, brut, sousFace: [], ends: [] }
+  const zPlancher = -eBas - input.dalleBas
+  const depart = all.some((x) => x.j === 0)
+  // Au départ, la sous-face de paillasse est prolongée jusqu'au dessous du plancher : béton monolithe, sans joint.
+  const k = sf.findIndex((p, i) => i + 1 < sf.length && p.y > -eBas + EPS && sf[i + 1].y > p.y + EPS)
+  const pente = k < 0 ? 0 : (sf[k + 1].x - sf[k].x) / (sf[k + 1].y - sf[k].y)
+  const xJonction = k < 0 ? sf[0].x : Math.max(tFirst, sf[k].x + (zPlancher - sf[k].y) * pente)
+  const sousFace = [
+    ...(depart ? [{ x: tFirst, y: zPlancher }, { x: xJonction, y: zPlancher }] : [{ x: tFirst, y: sf[0].y }]),
+    ...(depart && k >= 0 ? sf.slice(k) : sf),
+    { x: tLast, y: sf[sf.length - 1].y },
+  ]
+  // Traits de fin de coupe : du dessous du béton jusqu'au-dessus de la finition.
+  const ends: [Pt, Pt][] = [
+    [sousFace[0], fini[0]],
+    [sousFace[sousFace.length - 1], fini[fini.length - 1]],
+  ]
+  return { fini, brut, sousFace, ends }
+}

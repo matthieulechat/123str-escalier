@@ -2,7 +2,7 @@ import { DownloadIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { downloadDxf } from '../dxf.ts'
 import { CollapsibleCard } from './Section.tsx'
-import type { Pt, StairResult } from '../stair.ts'
+import { CUT, cutLines, type Pt, type StairResult } from '../stair.ts'
 import { Dim, Labels } from './Annot.tsx'
 import { boxOf, fmt, viewBox, type Label } from './svg.ts'
 
@@ -25,6 +25,13 @@ const Plan = ({ r }: { r: StairResult }) => {
   const turnMid = r.innerLine[Math.floor(r.innerLine.length / 2)]
   const dash = `${fs / 2} ${fs / 3}`
   const lerp = (a: Pt, b: Pt, k: number): Pt => map({ x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k })
+  // Débord au-delà des cotes (décalées de 2 à 2,5 fs), sous la marge du viewBox (5 fs).
+  const cuts = cutLines(r, CUT).map((c) => {
+    const ext = fs * 3.5
+    const pt = (t: number, k = 0): Pt => map({ x: c.a.x + c.n.x * k + c.d.x * t, y: c.a.y + c.n.y * k + c.d.y * t })
+    const [t0, t1] = [-ext, c.len + ext]
+    return { name: c.name, p: pt(t0), q: pt(t1), pa: pt(t0, fs * 1.5), qa: pt(t1, fs * 1.5), pl: pt(t0, fs * 2.3), ql: pt(t1, fs * 2.3) }
+  })
   const labels: Label[] = [
     { at: map(risers[0].foulee), text: 'Départ (1re contremarche)' },
     { at: map(end), text: `Arrivée (${n}e CM = nez de palier)` },
@@ -59,6 +66,7 @@ const Plan = ({ r }: { r: StairResult }) => {
           <span>┄ fini (après finition de {fmt(r.input.finContremarche)} cm en contremarche)</span>
           <span className="text-sky-700">bleu : marches balancées</span>
           <span className="text-red-600">rouge : ligne de foulée</span>
+          <span className="text-emerald-600">vert : lignes de coupe à {CUT} cm du mur</span>
           <span>Cotes en cm.</span>
         </p>
       }
@@ -81,6 +89,23 @@ const Plan = ({ r }: { r: StairResult }) => {
             <path d="M0,0 L10,5 L0,10 Z" fill="#dc2626" />
           </marker>
         </defs>
+        <defs>
+          <marker id="plan-cut-arrow" viewBox="0 0 10 10" refX={9} refY={5} markerWidth={fs} markerHeight={fs} markerUnits="userSpaceOnUse" orient="auto">
+            <path d="M0,0 L10,5 L0,10 Z" fill="#059669" />
+          </marker>
+        </defs>
+        {cuts.map((c) => (
+          <g key={c.name} stroke="#059669" fill="#059669">
+            <line x1={c.p.x} y1={c.p.y} x2={c.q.x} y2={c.q.y} strokeWidth={fs / 10} strokeDasharray={`${fs * 1.5} ${fs / 3} ${fs / 6} ${fs / 3}`} />
+            <line x1={c.p.x} y1={c.p.y} x2={c.pa.x} y2={c.pa.y} strokeWidth={fs / 6} markerEnd="url(#plan-cut-arrow)" />
+            <line x1={c.q.x} y1={c.q.y} x2={c.qa.x} y2={c.qa.y} strokeWidth={fs / 6} markerEnd="url(#plan-cut-arrow)" />
+            {[c.pl, c.ql].map((l, k) => (
+              <text key={k} x={l.x} y={l.y} stroke="none" fontSize={fs} fontWeight={700} textAnchor="middle" dominantBaseline="middle">
+                {c.name}
+              </text>
+            ))}
+          </g>
+        ))}
         <path d={path(r.fouleeLine)} fill="none" stroke="#dc2626" strokeWidth={fs / 10} strokeDasharray={`${fs} ${fs / 2}`} markerEnd="url(#plan-arrow)" />
         {risers.slice(0, -1).map((x, i) => {
           const p = mid(map(x.foulee), map(risers[i + 1].foulee))
