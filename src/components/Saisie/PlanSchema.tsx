@@ -18,6 +18,7 @@ const PlanSchema = ({ value, onChange }: SaisieProps) => {
   let inner = ''
   let foulee = ''
   let spots: Spot[] = []
+  let cx = 200 // centre horizontal du dessin de l'escalier
   if (type === 'droit') {
     outer = 'M50,120 L350,120 M50,200 L350,200'
     inner = 'M50,120 L50,200 M350,120 L350,200'
@@ -30,6 +31,7 @@ const PlanSchema = ({ value, onChange }: SaisieProps) => {
     outer = 'M40,260 L340,260 L340,30'
     inner = round ? 'M40,200 L240,200 A40,40 0 0 0 280,160 L280,30' : 'M40,200 L280,200 L280,30'
     foulee = round ? 'M40,230 L240,230 A70,70 0 0 0 310,160 L310,35' : 'M40,230 L310,230 L310,35'
+    cx = 190
     spots = [
       { k: 'volee1', label: 'Volée départ (→ mur du fond)', x: 190, y: 283, dim: [40, 270, 340, 270] },
       { k: 'volee2', label: 'Volée arrivée (→ mur du fond)', x: 385, y: 145, dim: [352, 30, 352, 260] },
@@ -40,6 +42,7 @@ const PlanSchema = ({ value, onChange }: SaisieProps) => {
     outer = 'M40,260 L370,260 L370,40 L40,40'
     inner = round ? 'M40,190 L270,190 A40,40 0 0 0 270,110 L40,110' : 'M40,190 L270,190 L270,110 L40,110'
     foulee = round ? 'M40,225 L270,225 A75,75 0 0 0 270,75 L45,75' : 'M40,225 L305,225 L305,75 L45,75'
+    cx = 205
     spots = [
       { k: 'volee1', label: 'Volée départ (1re marche → mur du fond)', x: 205, y: 283, dim: [40, 270, 370, 270] },
       { k: 'volee2', label: 'Volée arrivée (palier → mur du fond)', x: 205, y: 17, dim: [40, 30, 370, 30] },
@@ -74,7 +77,7 @@ const PlanSchema = ({ value, onChange }: SaisieProps) => {
           <Field key={s.k} k={s.k} label={s.label} x={((s.x + 40) / 480) * 100} y={(fy(s.y) / 300) * 100} value={value} onChange={onChange} />
         ))}
       </div>
-      <p className="mt-1 text-[11px] text-red-600">Pointillé rouge : ligne de foulée, la flèche indique le sens de montée</p>
+      <p className="mt-6 text-center text-[11px] text-red-600" style={{ transform: `translateX(${((cx + 40) / 480 - 0.5) * 100}%)` }}>Pointillé rouge : ligne de foulée, la flèche indique le sens de montée</p>
     </div>
   )
 }

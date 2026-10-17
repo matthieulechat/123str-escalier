@@ -14,6 +14,8 @@ interface CollapsibleCardProps {
   // Reste visible quand la carte est repliée (ex. bouton d'export).
   action?: ReactNode;
   defaultOpen?: boolean;
+  // Nom de la zone pour les lecteurs d'écran : la carte devient un repère navigable.
+  regionLabel?: string;
   children: ReactNode;
 }
 
@@ -22,9 +24,14 @@ export const CollapsibleCard = ({
   legend,
   action,
   defaultOpen = false,
+  regionLabel,
   children,
 }: CollapsibleCardProps) => (
-  <Card size="sm">
+  <Card
+    size="sm"
+    role={regionLabel ? "region" : undefined}
+    aria-label={regionLabel}
+  >
     <Collapsible defaultOpen={defaultOpen}>
       <div className="flex items-center gap-2 px-(--card-spacing)">
         <CollapsibleTrigger

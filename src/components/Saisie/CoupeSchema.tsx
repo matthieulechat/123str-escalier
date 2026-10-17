@@ -16,7 +16,7 @@ const SPOTS: { k: NumKey; label: string; x: number; y: number; to: [number, numb
   { k: 'nfHaut', label: 'NF arrivée', x: 440, y: 40, to: [380, YTOP] },
   { k: 'finSolHaut', label: 'Finition palier', x: 440, y: 95, to: [370, YTOP + 4] },
   { k: 'dalleHaut', label: 'Dalle palier', x: 440, y: 150, to: [360, YTOP + 26] },
-  { k: 'finMarche', label: 'Finition marche', x: 150, y: 60, to: [X0 + 2.5 * G, Y0 - 2 * H + 4] },
+  { k: 'finMarche', label: 'Finition marche', x: 150, y: 60, to: [X0 + 1.5 * G, Y0 - 2 * H + 3] },
   { k: 'finContremarche', label: 'Finition contremarche', x: 75, y: 112, to: [X0 + G + 3, Y0 - 1.5 * H] },
   { k: 'paillasse', label: 'Paillasse', x: 260, y: 215, to: [220, 159] },
 ]
