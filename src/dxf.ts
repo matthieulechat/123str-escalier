@@ -18,10 +18,16 @@ const NUM_H = 6
 const HACH = 'ABAK_A-HACHURES'
 const CUT_STYLE = 'ABAK_COUPE'
 const CUT_H = 6
+// Cotes du gabarit (style ABAK_BA de l'exemple, annotatif à 1:20) : texte Tahoma 5 posé à 4,6 au-dessus de la ligne,
+// trait oblique de 2,6, lignes d'attache de longueur fixe (10 côté objet, 3 au-delà), rangées tous les 16.
+const DIM_STYLE = 'ABAK_BA'
+const DIM_H = 5
+const DIM_ROW = 16
 
 // Une vue tournée de `rotation` degrés (sens trigo) autour du centre de l'escalier, puis décalée de (dx, dy).
 // Les textes restent horizontaux. `brut` : sans la couche de finition (contremarches finies).
-const view = (r: StairResult, rotation: number, dx: number, dy = 0, brut = false): string[] => {
+// `blocks` reçoit les blocs anonymes *D1, *D2… des cotes.
+const view = (r: StairResult, rotation: number, blocks: string[], dx: number, dy = 0, brut = false): string[] => {
   const [cos, sin] = [Math.cos((rotation * Math.PI) / 180), Math.sin((rotation * Math.PI) / 180)]
   const flip = r.input.sens === 'gauche' ? -1 : 1
   // Repère écran (comme Plan.tsx), puis Y inversé : le SVG a l'axe Y vers le bas, le DXF vers le haut.
@@ -39,11 +45,13 @@ const view = (r: StairResult, rotation: number, dx: number, dy = 0, brut = false
   const drawn: [Pt, Pt][] = [] // segments tracés (repère DXF), pour que les numéros les évitent
   const color = (c?: number) => (c ? ['62', `${c}`] : [])
   // seg/segs : points déjà dans le repère écran ; line/poly : points du moteur.
-  const seg = (layer: string, a: Pt, b: Pt, c?: number) => {
-    const [p, q] = [out(a), out(b)]
+  // raw : points déjà dans le repère DXF.
+  const raw = (layer: string, p: Pt, q: Pt, c?: number) => {
+    if (Math.hypot(q.x - p.x, q.y - p.y) < 1e-6) return // points doubles du contour (angle vif du jour)
     drawn.push([p, q])
     ents.push('0', 'LINE', '8', layer, ...color(c), '10', `${p.x}`, '20', `${p.y}`, '30', '0', '11', `${q.x}`, '21', `${q.y}`, '31', '0')
   }
+  const seg = (layer: string, a: Pt, b: Pt, c?: number) => raw(layer, out(a), out(b), c)
   const segs = (layer: string, pts: Pt[]) => pts.slice(1).forEach((p, i) => seg(layer, pts[i], p))
   const line = (layer: string, a: Pt, b: Pt, c?: number) => seg(layer, scr(a), scr(b), c)
   const poly = (layer: string, pts: Pt[]) => segs(layer, pts.map(scr))
@@ -54,8 +62,17 @@ const view = (r: StairResult, rotation: number, dx: number, dy = 0, brut = false
     const [a, b] = [pts[pts.length - 2], pts[pts.length - 1]]
     return (end.x - b.x) * (b.x - a.x) + (end.y - b.y) * (b.y - a.y) > 1e-6 ? [...pts, end] : pts
   }
-  poly(VU, toEnd(r.outerLine, last.brutOuter))
-  poly(VU, toEnd(r.innerLine, last.brutInner))
+  // Au départ, le limon commence à la 1re contremarche brute : le bout devant (épaisseur de finition) est en finition
+  // sur la vue finie, absent de la vue brute.
+  const first = r.risers[0]
+  const outer = toEnd([first.brutOuter, ...r.outerLine.slice(1)], last.brutOuter)
+  const inner = toEnd([first.brutInner, ...r.innerLine.slice(1)], last.brutInner)
+  poly(VU, outer)
+  poly(VU, inner)
+  if (!brut) {
+    line(CACHE, r.outerLine[0], first.brutOuter)
+    line(CACHE, r.innerLine[0], first.brutInner)
+  }
   r.risers.forEach((x, i) => {
     const edge = i === 0 || i === r.risers.length - 1
     // Vue brute : contremarches intermédiaires en couleur du calque FIN.
@@ -86,7 +103,7 @@ const view = (r: StairResult, rotation: number, dx: number, dy = 0, brut = false
   // posée sur la ligne, côté vue, à 1 au-delà de l'extrémité. Lettre horizontale comme les autres textes.
   for (const c of cutLines(r)) {
     const pt = (t: number, k = 0): Pt => scr({ x: c.a.x + c.n.x * k + c.d.x * t, y: c.a.y + c.n.y * k + c.d.y * t })
-    const ext = 2 * size
+    const ext = brut ? 2 * size : 2 * DIM_ROW + 10 // au-delà des cotes globales, comme l'exemple
     const ends = [-ext, c.len + ext]
     seg(AXE, pt(ends[0]), pt(ends[1]))
     for (const [t, dir] of [[ends[0], 1], [ends[1], -1]]) {
@@ -132,6 +149,73 @@ const view = (r: StairResult, rotation: number, dx: number, dy = 0, brut = false
       '7', NUM_STYLE, '51', '20', '72', '1', '73', '2', '11', `${c.x}`, '21', `${c.y}`, '31', '0')
   })
 
+  // Une vraie cote AutoCAD (linéaire, étirable) entre les angles v1 et v2 du contour : entité DIMENSION + bloc anonyme
+  // qui la dessine comme l'exemple (lignes d'attache de longueur fixe, traits obliques, texte centré au-dessus).
+  // `pos(v, d)` : projection de v sur la ligne de cote, décalée de d vers l'extérieur.
+  const dim = (v1: Pt, v2: Pt, pos: (v: Pt, d?: number) => Pt, t: Pt, up: Pt) => {
+    const name = `*D${blocks.length + 1}`
+    const xy = (p: Pt) => ['10', `${p.x}`, '20', `${p.y}`, '30', '0']
+    const lin = (p: Pt, q: Pt) => ['0', 'LINE', '8', COTA, ...xy(p), '11', `${q.x}`, '21', `${q.y}`, '31', '0']
+    const pt = (p: Pt) => ['0', 'POINT', '8', 'DEFPOINTS', ...xy(p)]
+    const [d1, d2] = [pos(v1), pos(v2)]
+    const len = Math.hypot(d2.x - d1.x, d2.y - d1.y)
+    const mid = at({ x: (d1.x + d2.x) / 2, y: (d1.y + d2.y) / 2 }, up, 4.6)
+    const rot = t.y ? 90 : 0
+    const tick = (c: Pt) => lin(at(at(c, t, -1.3), up, -1.3), at(at(c, t, 1.3), up, 1.3)) // trait oblique à 45°
+    blocks.push(['0', 'BLOCK', '8', '0', '2', name, '70', '1', '10', '0', '20', '0', '30', '0', '3', name,
+      ...lin(d1, d2), ...lin(pos(v1, -10), pos(v1, 3)), ...lin(pos(v2, -10), pos(v2, 3)), ...tick(d1), ...tick(d2),
+      // ponytail: texte toujours centré, il peut déborder d'une cote très courte (< 2 caractères de large).
+      '0', 'TEXT', '8', COTA, '7', DIM_STYLE, ...xy(mid), '40', `${DIM_H}`, '1', String(Math.round(len * 10) / 10),
+      '50', `${rot}`, '72', '1', '73', '2', '11', `${mid.x}`, '21', `${mid.y}`, '31', '0',
+      ...pt(v1), ...pt(v2), ...pt(d2), '0', 'ENDBLK', '8', '0'].join('\r\n'))
+    ents.push('0', 'DIMENSION', '8', COTA, '2', name, '3', DIM_STYLE, ...xy(d2), '11', `${mid.x}`, '21', `${mid.y}`, '31', '0',
+      '70', '0', '1', '', '13', `${v1.x}`, '23', `${v1.y}`, '33', '0', '14', `${v2.x}`, '24', `${v2.y}`, '34', '0', '50', `${rot}`,
+      // Surcharge DIMSCALE = 20 : le style ABAK_BA du gabarit (annotatif, DIMSCALE 1) l'emporte à l'insertion et
+      // dessinerait sinon les cotes à l'échelle 1, minuscules.
+      '1001', 'ACAD', '1000', 'DSTYLE', '1002', '{', '1070', '40', '1040', '20', '1002', '}')
+  }
+
+  // Cotes globales du contour béton (vue finie seulement, pour le maçon), droites, à l'extérieur des 4 côtés du contour : sur chaque côté, les angles
+  // du contour visibles depuis l'extérieur donnent une chaîne (ex. 90 / 10 / 90), puis la cote totale au-delà.
+  if (!brut) {
+    const turn = (a: Pt, v: Pt, b: Pt) => {
+      const [u, w] = [unit(a, v), unit(v, b)]
+      return Math.abs(u.x * w.y - u.y * w.x)
+    }
+    // Contour béton fermé (limons tracés, de la 1re à la dernière CM brute), sans points doubles ni alignés.
+    const ring = [...outer, ...[...inner].reverse()].map((p) => out(scr(p)))
+      .filter((v, i, all) => Math.hypot(v.x - all[(i + all.length - 1) % all.length].x, v.y - all[(i + all.length - 1) % all.length].y) > 1e-6)
+      .filter((v, i, all) => turn(all[(i + all.length - 1) % all.length], v, all[(i + 1) % all.length]) > 1e-9)
+    const corners = ring.filter((v, i) => turn(ring[(i + ring.length - 1) % ring.length], v, ring[(i + 1) % ring.length]) > Math.sin(Math.PI / 9)) // > 20° : pas les points d'un arc
+    const segsRing = ring.map((p, i): [Pt, Pt] => [p, ring[(i + 1) % ring.length]])
+    const dot = (p: Pt, d: Pt) => p.x * d.x + p.y * d.y
+    for (const nrm of [{ x: 0, y: 1 }, { x: 0, y: -1 }, { x: 1, y: 0 }, { x: -1, y: 0 }]) {
+      const t = { x: Math.abs(nrm.y), y: Math.abs(nrm.x) } // sens de lecture de la cote (gauche → droite, bas → haut)
+      const up = { x: -t.y, y: t.x } // côté du texte
+      const edge = Math.max(...ring.map((p) => dot(p, nrm)))
+      // Angle visible : la demi-droite vers l'extérieur ne rencontre aucun autre côté du contour.
+      const seen = (v: Pt) => segsRing.every(([a, b]) => {
+        if (Math.hypot(a.x - v.x, a.y - v.y) < 1e-6 || Math.hypot(b.x - v.x, b.y - v.y) < 1e-6) return true
+        const [sa, sb, s] = [dot(a, t), dot(b, t), dot(v, t)]
+        if (s < Math.min(sa, sb) - 1e-6 || s > Math.max(sa, sb) + 1e-6) return true
+        const depth = Math.abs(sb - sa) < 1e-6 ? Math.max(dot(a, nrm), dot(b, nrm)) : dot(a, nrm) + ((s - sa) / (sb - sa)) * (dot(b, nrm) - dot(a, nrm))
+        return depth <= dot(v, nrm) + 1e-6
+      })
+      // L'angle doit border un côté du contour tourné vers l'extérieur.
+      const faces = (v: Pt) => segsRing.some(([a, b]) => (a === v || b === v)
+        && Math.abs(dot(unit(a, b), nrm)) < 0.01
+        && seen({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }))
+      const vs = corners.filter((v) => seen(v) && faces(v)).sort((a, b) => dot(a, t) - dot(b, t))
+        .filter((v, i, all) => i === 0 || dot(v, t) - dot(all[i - 1], t) > 0.05)
+      const rows = vs.length > 2 ? [vs, [vs[0], vs[vs.length - 1]]] : [vs]
+      rows.forEach((row, k) => {
+        const o = edge + DIM_ROW * (k + 1)
+        const pos = (v: Pt, d = 0): Pt => ({ x: t.x * dot(v, t) + nrm.x * (o + d), y: t.y * dot(v, t) + nrm.y * (o + d) })
+        row.slice(1).forEach((v2, i) => dim(row[i], v2, pos, t, up))
+      })
+    }
+  }
+
   return ents
 }
 
@@ -176,14 +260,26 @@ export const planDxf = (r: StairResult): string => {
     Math.max(...pts.map((p) => p.x)) - Math.min(...pts.map((p) => p.x)),
     Math.max(...pts.map((p) => p.y)) - Math.min(...pts.map((p) => p.y)),
   )
-  const ents = [...view(r, rotation, 0), ...view(r, rotation, diag * 1.3, 0, true)]
+  const blocks: string[] = []
+  const ents = [...view(r, rotation, blocks, 0), ...view(r, rotation, blocks, diag * 1.3, 0, true)]
   ents.push(...sections(r, -diag / 2, -diag * 0.75, diag * 0.3, diag / 50))
-  // Seule table : les styles de texte (numéros, lettres de coupe). Les calques restent ceux du gabarit à l'insertion (BDR-006).
+  // Tables : styles de texte (numéros, lettres de coupe, cotes) et style de cote. Les calques restent ceux du gabarit
+  // à l'insertion (BDR-006) ; un style déjà présent dans le dessin cible garde sa définition.
   const def = (name: string, h: number, oblique: number, font: string) =>
     ['0', 'STYLE', '2', name, '70', '0', '40', '0', '41', '1', '50', `${oblique}`, '71', '0', '42', `${h}`, '3', font, '4', '']
-  const style = ['0', 'TABLE', '2', 'STYLE', '70', '2', ...def(NUM_STYLE, NUM_H, 20, 'tahoma.ttf'),
-    ...def(CUT_STYLE, CUT_H, 0, 'arialbi.ttf'), '0', 'ENDTAB']
-  return ['0', 'SECTION', '2', 'TABLES', ...style, '0', 'ENDSEC', '0', 'SECTION', '2', 'ENTITIES', ...ents, '0', 'ENDSEC', '0', 'EOF', '']
+  const style = ['0', 'TABLE', '2', 'STYLE', '70', '3', ...def(NUM_STYLE, NUM_H, 20, 'tahoma.ttf'),
+    ...def(CUT_STYLE, CUT_H, 0, 'arialbi.ttf'), ...def(DIM_STYLE, DIM_H, 0, 'tahoma.ttf'), '0', 'ENDTAB']
+  // Style de cote ABAK_BA de l'exemple, en R12 (non annotatif) : échelle 20, traits obliques (DIMTSZ), texte au-dessus,
+  // arrondi au mm (DIMRND) sans zéros inutiles (DIMZIN 8).
+  const dimVars: [string, string][] = [['3', ''], ['4', ''], ['5', ''], ['6', ''], ['7', ''], ['40', '20'], ['41', '0.13'],
+    ['42', '0.2'], ['43', '0'], ['44', '0.15'], ['45', '0.1'], ['46', '0'], ['47', '0'], ['48', '0'], ['140', '0.25'], ['141', '0'],
+    ['142', '0.13'], ['143', '25.4'], ['144', '1'], ['145', '0'], ['146', '1'], ['147', '0.1'], ['71', '0'], ['72', '0'], ['73', '0'],
+    ['74', '0'], ['75', '0'], ['76', '0'], ['77', '1'], ['78', '8'], ['170', '0'], ['171', '2'], ['172', '1'], ['173', '0'],
+    ['174', '1'], ['175', '0'], ['176', '0'], ['177', '0'], ['178', '0']]
+  const dimstyle = ['0', 'TABLE', '2', 'DIMSTYLE', '70', '1', '0', 'DIMSTYLE', '2', DIM_STYLE, '70', '0', ...dimVars.flat(), '0', 'ENDTAB']
+  const appid = ['0', 'TABLE', '2', 'APPID', '70', '1', '0', 'APPID', '2', 'ACAD', '70', '0', '0', 'ENDTAB'] // pour la surcharge des cotes
+  return ['0', 'SECTION', '2', 'TABLES', ...style, ...appid, ...dimstyle, '0', 'ENDSEC',
+    '0', 'SECTION', '2', 'BLOCKS', ...blocks, '0', 'ENDSEC', '0', 'SECTION', '2', 'ENTITIES', ...ents, '0', 'ENDSEC', '0', 'EOF', '']
     .join('\r\n')
 }
 

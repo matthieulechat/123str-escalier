@@ -26,6 +26,7 @@ project adheres to [Semantic Versioning](https://semver.org/).
 - Coupes dans l'export DXF, sous les vues en plan : profil fini, béton brut et paillasse, avec 100 cm de plancher au départ et de palier à l'arrivée ; lignes de coupe et traits de fin de coupe sur le calque axe, y compris sur les vues en plan.
 - Saisie de l'épaisseur du plancher bas, représenté dans les coupes exportées.
 - Vue en plan brute dans l'export DXF, à droite du plan fini : sans contremarches finies, ligne de foulée ni numéros, contremarches intermédiaires sur le calque fin.
+- Cotes globales de coffrage sur le plan fini de l'export DXF, pour le maçon : contour de l'escalier en béton brut, de trait plein à trait plein, en chaîne (ex. 90 / 10 / 90) puis cote totale sur chaque côté. Ce sont de vraies cotes AutoCAD, étirables, au style `ABAK_BA` du bureau, à la bonne taille une fois insérées dans le gabarit.
 
 ### Changed
 
@@ -39,9 +40,11 @@ project adheres to [Semantic Versioning](https://semver.org/).
 - Cotes verticales des schémas de saisie écrites à la verticale, collées à leur cote, et emmarchement dessiné plus large ; schémas centrés et à la même échelle dans toutes les orientations.
 - Étiquettes du plan annoté placées au plus près de leur cible, sans recouvrir le dessin, dans des cartes bleues assorties aux champs de saisie (cartes bleues aussi en saisie).
 - Sur les schémas, plus de décimale inutile (220 au lieu de 220,0).
+- Titre « Plan — dimensions FINIES » dans la saisie, pour rappeler que les cotes saisies sont finies.
 
 ### Fixed
 
 - Les panneaux de résultats ne se referment plus quand une saisie passe par une valeur invalide (champ vidé ou en cours de frappe).
 - Sur le schéma de coupe, le repère « Finition marche » pointe de nouveau sur la finition de la marche et non dans le béton.
 - Export DXF : les limons vont jusqu'à la dernière contremarche brute pour fermer l'escalier en plan, et les lignes de coupe tombent sur le calque `ABAK_A-AXES` du gabarit (nom corrigé).
+- Export DXF : au départ, le bout de limon devant la 1re contremarche brute est sur le calque de finition, et n'apparaît plus sur le plan brut ; plus de traits de longueur nulle aux angles d'un jour droit.

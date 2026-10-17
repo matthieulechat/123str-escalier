@@ -99,7 +99,7 @@ const Saisie = ({ value, onChange, result }: SaisieProps & { result: StairResult
         {/* Colonnes de même hauteur : chaque schéma est centré verticalement dans la sienne. */}
         <div className="grid gap-6 xl:grid-cols-2">
           <div className="flex flex-col">
-            <h2 className="mb-1 font-heading text-sm font-bold">Plan — dimensions</h2>
+            <h2 className="mb-1 font-heading text-sm font-bold">Plan — dimensions FINIES</h2>
             <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center py-6">
               <PlanSchema value={value} onChange={onChange} />
             </div>
