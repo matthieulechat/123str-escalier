@@ -17,7 +17,7 @@ project adheres to [Semantic Versioning](https://semver.org/).
 - Plan annoté : contremarches brutes en trait plein, finies en pointillé, ligne de foulée avec flèche de montée, cotes des volées, de l'emmarchement et du giron.
 - Coupe développée sur la ligne de foulée (profil fini, profil brut, paillasse, dalle palier) et détail annoté du départ.
 - Tableau des valeurs par contremarche (girons, collets, cumuls de traçage) et lexique du vocabulaire, en panneaux repliables.
-- Impression de la page.
+- Import et export des paramètres de saisie dans un fichier JSON, pour reprendre un escalier plus tard ou le partager.
 - Application installable (PWA) avec icônes, logo et image d'aperçu pour le partage de lien.
 - Export DXF du plan pour AutoCAD : tracés sur les calques du bureau (limons, contremarches brutes et finies), ligne de foulée avec double ligne de départ et flèche d'arrivée, numéros de marche côté jour, dans l'orientation choisie pour se caler sur le plan archi.
 - Vue 3D orientable de l'escalier (rotation, zoom, déplacement) : marches et paillasse en béton brut, finitions de marche et de contremarche, marches balancées en bleu, avec des cases à cocher pour masquer les finitions ou la couleur des balancées. Chargée seulement à l'ouverture de son panneau.

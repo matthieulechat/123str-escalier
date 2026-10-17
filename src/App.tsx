@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { PrinterIcon } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { DownloadIcon, UploadIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { computeStair, type StairInput, type StairResult } from "./stair.ts";
@@ -34,12 +34,37 @@ const DEFAULTS: StairInput = {
   nbBalancees: 5,
 };
 
+// Télécharge les paramètres en JSON.
+const exportInput = (input: StairInput) => {
+  const url = URL.createObjectURL(
+    new Blob([JSON.stringify(input, null, 2)], { type: "application/json" }),
+  );
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "escalier.json";
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
 const App = () => {
   const [input, setInput] = useState<StairInput>(DEFAULTS);
+  const fileRef = useRef<HTMLInputElement>(null);
   const result = useMemo(() => computeStair(input), [input]);
   // Dernier calcul valide (mise à jour pendant le rendu, motif React « état dérivé du précédent »).
   const [lastOk, setLastOk] = useState<StairResult | null>(null);
   if (!("error" in result) && result !== lastOk) setLastOk(result);
+
+  // Complète avec DEFAULTS : un fichier d'une version antérieure reste lisible.
+  const importInput = async (file: File) => {
+    try {
+      const data: unknown = JSON.parse(await file.text());
+      if (typeof data !== "object" || data === null || Array.isArray(data))
+        throw new Error();
+      setInput({ ...DEFAULTS, ...(data as Partial<StairInput>) });
+    } catch {
+      alert("Fichier de paramètres invalide.");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-muted/40">
@@ -48,10 +73,27 @@ const App = () => {
           <img src="/icon.svg" alt="" width={36} height={36} />
           Escalier béton — calcul des dimensions
         </h1>
-        <Button onClick={() => window.print()} className="print:hidden">
-          <PrinterIcon aria-hidden="true" />
-          Imprimer
-        </Button>
+        <div className="flex gap-2 print:hidden">
+          <input
+            ref={fileRef}
+            type="file"
+            accept="application/json,.json"
+            hidden
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) void importInput(file);
+              e.target.value = "";
+            }}
+          />
+          <Button variant="outline" onClick={() => fileRef.current?.click()}>
+            <UploadIcon aria-hidden="true" />
+            Importer
+          </Button>
+          <Button onClick={() => exportInput(input)}>
+            <DownloadIcon aria-hidden="true" />
+            Exporter
+          </Button>
+        </div>
       </header>
       <main className="mx-auto flex max-w-6xl flex-col gap-6 p-6">
         <Saisie value={input} onChange={setInput} result={lastOk} />
